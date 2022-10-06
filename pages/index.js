@@ -3,6 +3,7 @@ import Menu from './menu'
 
 export default function Home() {
   //logica
+  
   return (
    <>
      <Menu />
