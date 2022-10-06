@@ -1,16 +1,35 @@
 import Menu from "../menu";
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { useMutation } from '@apollo/client';
 import { Button, Form, Input, Radio } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
+import { CREATE_PREDIO_MUTATION } from "../../backend/graphql/mutaciones";
 
 export default function Predios() {
   //logica
   const [form] = Form.useForm();
   const [requiredMark, setRequiredMarkType] = useState('optional');
+  const [crearPredio, { data, error } ] = useMutation ( CREATE_PREDIO_MUTATION)
 
   const onFinish = (values) => {
     console.log('Success:', values);
+    try {
+      //crearPredio
+      crearPredio ((
+        {
+          variables: {
+            numpre: values.nopredial,
+            nombre: values.nombre,
+            valor: values.valor,
+            depto:  values.depto,
+            municipio: values.municipio
+          }
+        }
+      ))
+      console.log('registro creado correctamente')
+    } catch (error) {
+      console.log('error al crear registro', error);
+    }
   };
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
@@ -28,19 +47,13 @@ export default function Predios() {
        labelCol={{span: 8}}
        wrapperCol={{ span: 16 }}
        onFinish={onFinish}
-       onFinishFailed={onFinishFailed}
+       // onFinishFailed={onFinishFailed}
      >
     <Form.Item
          label="Id predio"
-         name="idPredio"
-         rules={[
-           {
-             required: true,
-             message: 'Digita el numero predial!',
-           },
-         ]}
+         name="idPredio"       
        >
-         <Input />
+         <Input disabled />
        </Form.Item>
        <Form.Item
          label="Numero Predial"
@@ -52,7 +65,7 @@ export default function Predios() {
            },
          ]}
        >
-         <Input />
+         <Input/>
        </Form.Item>
  
        <Form.Item
@@ -85,7 +98,7 @@ export default function Predios() {
 
        <Form.Item
          label="Departamento"
-         name="dpto"
+         name="depto"
          
          rules={[
            {

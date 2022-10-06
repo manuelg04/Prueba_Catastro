@@ -2,33 +2,43 @@
 import { gql } from "@apollo/client";
 
 export const QUERY_ALL_PREDIOS = gql `
-  query MyQuery {
+  query Predios {
       allPredios {
         edges {
           node {
-            valor
-            depto
-            municipio
+              idPredio
+              numpre
+              nombre
+              valor
+              depto
+              municipio
           }
         }
       }
     }
   `
 
-  export const create_predio_mutation  = gql `
-  
-  mutation crearpredio {
-      createPredio(
+  export const CREATE_PREDIO_MUTATION  = gql `  
+     mutation createPredio (
+            $numpre: String!,
+            $nombre: String!,
+            $valor: String,
+            $depto: String, 
+            $municipio: String
+  ) {
+      createPredio (
         input: {
           predio: {
-            numpre: "1234",
-            nombre: "elsharawi",
-            depto: "antioquia", 
-            municipio: "siloe"}
+            numpre: $numpre,
+            nombre: $nombre,
+            valor:  $valor,
+            depto: $depto, 
+            municipio: $municipio
+          }
         }
       ) {
         predio{
-          nombre
+          numpre
         }
       }
     }
