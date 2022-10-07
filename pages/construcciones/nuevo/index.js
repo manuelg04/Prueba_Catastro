@@ -1,4 +1,4 @@
-import Menu from "../menu";
+import Menu from "../../menu";
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Radio } from 'antd';
 import React, { useState } from 'react';

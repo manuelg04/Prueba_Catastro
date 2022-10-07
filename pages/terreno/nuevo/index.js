@@ -1,4 +1,4 @@
-import Menu from "../menu";
+import Menu from "../../menu";
 import { Button, Form, Input} from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';

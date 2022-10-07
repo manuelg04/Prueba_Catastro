@@ -1,9 +1,9 @@
-import Menu from "../menu";
+import Menu from "../../menu";
 import { useMutation } from '@apollo/client';
 import { Button, Form, Input, Radio } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { CREATE_PREDIO_MUTATION } from "../../backend/graphql/mutaciones";
+import { CREATE_PREDIO_MUTATION } from "../../../backend/graphql/mutaciones";
 
 export default function Predios() {
   //logica

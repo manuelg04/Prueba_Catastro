@@ -49,21 +49,14 @@ query Propietarios {
     allPropietarios {
       edges {
         node {
-            id
-            nit
-            cedula
+            tipoprop
             tipodoc
-            numdoc
-            personatu 
-            persojuri
+            nodoc
             nombre
-            apellido
-            razonsocial
-            direccion 
+            direccion
             telefono
-            email
-
-        }
+            email       
+           }
       }
     }
   }
@@ -73,30 +66,24 @@ export const CREATE_PROPIETARIO_MUTATION  = gql `
 
 mutation createPropietario (
       
-       $nombre: String!,
-       $apellido: String,
-       $razonsocial: String, 
-       $cedula: String,
-       $nit: String,
-       $personatu: String,
-       $persojuri: String,
-       $direccion: String,
-       $telefono: String,
-       $email: String
+            $tipoprop: String,
+            $tipodoc: String,
+            $nodoc: String!,
+            $nombre: String,
+            $direccion: String,
+            $telefono: String,
+            $email: String
 ) {
  createPropietario (
    input: {
      propietario: {
-       nombre:$nombre,
-       apellido:$apellido,
-       razonsocial:$razonsocial, 
-       cedula: $cedula,
-       nit: $nit,
-       personatu: $personatu,
-       persojuri: $persojuri,
-       direccion:$direccion,
-        telefono:$telefono,
-       email:$email
+            tipoprop: $tipoprop,
+            tipodoc: $tipodoc, 
+            nodoc: $nodoc,
+            nombre: $nombre,
+            direccion: $direccion,
+            telefono: $telefono,
+            email: $email
      }
    }
  ) {

@@ -1,9 +1,9 @@
-import Menu from "../menu";
+import Menu from "../../menu";
 import { Button, Form, Input, Radio } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { useMutation } from '@apollo/client';
-import { CREATE_PROPIETARIO_MUTATION } from "../../backend/graphql/mutaciones";
+import { CREATE_PROPIETARIO_MUTATION } from "../../../backend/graphql/mutaciones";
 
 
 export default function Propietarios() {
@@ -17,15 +17,10 @@ export default function Propietarios() {
         
         {
           variables: {
-            nombre: values.nombre,
-            apellido: values.apellido,
+            tipoprop: values.tipoprop,
             tipodoc: values.tipodoc,
-            nit: values.numdoc,
-            razonsocial: values.razonsocial,
-            personatu: values.personatu,
-            persojuri: values.persojuri,
-            cedula: values.numdoc,
-            numdoc: values.numdoc,
+            nodoc: values.numdoc,
+            nombre: values.nombre,
             direccion: values.direccion,
             telefono: values.telefono,
             email: values.email
@@ -81,42 +76,27 @@ export default function Propietarios() {
   <Form.Item
          label="Id predio"
          name="idPredio"
-         rules={[
-           {
-             required: true,
-             message: 'Digita el numero predial!',
-           },
-         ]}
+         
        >
          <Input />
        </Form.Item>
 
+
+
        <Form.Item
-        label="Nombre"
-        name="nombre"
+        label="tipo de propietario"
+        name="tipoprop"
         rules={[
           {
             required: true,
-            message: 'Digita el tipo del terreno!',
+            message: 'Digita el tipo de propietario!',
           },
         ]}
       >
         <Input />
       </Form.Item>
 
-      <Form.Item
-        label="apellido"
-        name="apellido"
-        rules={[
-          {
-            required: true,
-            message: 'Digita el tipo del terreno!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-
+      
       <Form.Item
         label="Tipo de documento"
         name="tipodoc"
@@ -130,8 +110,9 @@ export default function Propietarios() {
         <Input />
       </Form.Item>
 
+
       <Form.Item
-        label="numero de documento cedula o nit"
+        label="numero de documento"
         name="numdoc"
         rules={[
           {
@@ -142,6 +123,20 @@ export default function Propietarios() {
       >
         <Input />
       </Form.Item>
+
+       <Form.Item
+        label="Nombre / razon social"
+        name="nombre"
+        rules={[
+          {
+            required: true,
+            message: 'Digita el nombre!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+      
 
       <Form.Item
         label="direccion"

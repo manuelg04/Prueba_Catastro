@@ -15,7 +15,7 @@ return (
 <>
  <ApolloProvider client={client}>
     <Row justify="space-around">
-      <Col span={10}>
+      <Col span={15}>
           <Component {...pageProps} />
       </Col>
           
