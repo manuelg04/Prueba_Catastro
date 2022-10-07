@@ -1,4 +1,4 @@
-import Menu from "../../menu";
+import Menu from '../../menu';
 import { useMutation } from '@apollo/client';
 import { Button, Form, Input, Radio } from 'antd';
 import React, { useState } from 'react';
@@ -41,7 +41,7 @@ export default function Predios() {
   return (
     <>
     <Menu/>
-      <h1>Esta es la pagina de predios</h1>
+      <h1>Esta es la pagina para CREAR predios</h1>
    <Form
        name="basic"
        labelCol={{span: 8}}
