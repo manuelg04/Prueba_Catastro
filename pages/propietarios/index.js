@@ -1,42 +1,83 @@
 import Menu from "../menu";
-import { InfoCircleOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Radio } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Select } from 'antd'
-
+import { useMutation } from '@apollo/client';
+import { CREATE_PROPIETARIO_MUTATION } from "../../backend/graphql/mutaciones";
 
 
 export default function Propietarios() {
-    const [form] = Form.useForm();
-    const [requiredMark, setRequiredMarkType] = useState('optional');
-  
+
+  const [crearPropietario, { data, error } ] = useMutation ( CREATE_PROPIETARIO_MUTATION)
+
+  const onFinish = (values) => {
+    console.log('Success:', values);
+    try {
+      crearPropietario ((
+        
+        {
+          variables: {
+            nombre: values.nombre,
+            apellido: values.apellido,
+            tipodoc: values.tipodoc,
+            nit: values.numdoc,
+            razonsocial: values.razonsocial,
+            personatu: values.personatu,
+            persojuri: values.persojuri,
+            cedula: values.numdoc,
+            numdoc: values.numdoc,
+            direccion: values.direccion,
+            telefono: values.telefono,
+            email: values.email
+
+          }
+        }
+      ))
+      console.log('registro creado correctamente')
+
+    } catch (error) {
+      console.log("error al crear el registro", error)
+    }
+
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
+
+
     const onRequiredTypeChange = ({ requiredMarkValue }) => {
       setRequiredMarkType(requiredMarkValue);
     };
-    const { Option } = Select;
+
+    const formSuccess=(datos)=>{
+
+      console.log("Formulario enviado exitosamente ", datos)
+    }
+    const formFailed=(error)=>{
+  
+      console.log("Error : ", error)
+    }
+
+
   return (
    <>
    <Menu/>
    <h1>Esta es la pagina de propietarios</h1>
 
-   <Select
-    showSearch
-    style={{
-      width: 200,
-    }}
-    placeholder="Tipo de persona"
-    optionFilterProp="children"
-    filterOption={(input, option) => option.children.includes(input)}
-    filterSort={(optionA, optionB) =>
-      optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-    }
-  >
-    <Option value="1">Persona Natural</Option>
-    <Option value="2">Persona Juridica</Option>
- 
-  </Select>
 
+
+   <Form
+      name="basic"
+      labelCol={{span: 8}}
+      wrapperCol={{ span: 16 }}
+      onFinish={onFinish}
+      //onFinishFailed={onFinishFailed}
+    >
+
+
+
+  
   <Form.Item
          label="Id predio"
          name="idPredio"
@@ -50,55 +91,110 @@ export default function Propietarios() {
          <Input />
        </Form.Item>
 
+       <Form.Item
+        label="Nombre"
+        name="nombre"
+        rules={[
+          {
+            required: true,
+            message: 'Digita el tipo del terreno!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
 
-
-
-
-   <Form
-      form={form}
-      layout="vertical"
-      initialValues={{
-        requiredMarkValue: requiredMark,
-      }}
-      onValuesChange={onRequiredTypeChange}
-      requiredMark={requiredMark}
-    >
-        
+      <Form.Item
+        label="apellido"
+        name="apellido"
+        rules={[
+          {
+            required: true,
+            message: 'Digita el tipo del terreno!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
 
       <Form.Item
         label="Tipo de documento"
-        tooltip={{
-          title: 'Tooltip with customize icon',
-          icon: <InfoCircleOutlined />,
+        name="tipodoc"
+        rules={[
+          {
+            required: true,
+            message: 'Digita el tipo de documento',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="numero de documento cedula o nit"
+        name="numdoc"
+        rules={[
+          {
+            required: true,
+            message: 'Digita numero de su documento',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="direccion"
+        name="direccion"
+        rules={[
+          {
+            required: true,
+            message: 'ingresa tu direccion',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+  
+      <Form.Item
+        label="telefono"
+        name="telefono"
+        rules={[
+          {
+            required: true,
+            message: 'Digita tu telefono',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+
+      <Form.Item
+        label="email"
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: 'Ingresa tu correo!',
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        wrapperCol={{
+          offset: 8,
+          span: 16,
         }}
       >
-        <Input placeholder="input placeholder" />
-        <Form.Item label="Numero de documento" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
       </Form.Item>
-
-      </Form.Item>
-      <Form.Item label="Nombres Y Apellidos" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-
-      <Form.Item label="Direccion" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-
-      <Form.Item label="Telefono" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-
-      <Form.Item label="Email" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-
-      <Form.Item>
-        <Button type="primary">Submit</Button>
-      </Form.Item>
-    </Form>
-   
+      </Form>  
    </>
   )
 }

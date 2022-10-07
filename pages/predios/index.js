@@ -166,11 +166,6 @@ export default function Predios() {
          <Input />
        </Form.Item>
 
-       
-       
-
-       
-
 
 
       

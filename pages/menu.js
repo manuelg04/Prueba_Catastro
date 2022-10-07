@@ -11,7 +11,7 @@ export default function Menu() {
         <div className="contenedor">
           <div>
           </div>
-          <nav>
+          <nav className={styles.navegacion}>
             <Link className="link" href="/predios"> Predios</Link>
             <Link className="link" href="/construcciones">Construcciones</Link>
             <Link className="link" href="/terreno">terrenos</Link>
