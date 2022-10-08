@@ -12,7 +12,6 @@ export default function Predios() {
   const { data, loading, error } = useQuery ( QUERY_ALL_PREDIOS );
   const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
   const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS)
-  //console.log("🚀 ~ data", data)
   const [ ModalAbierto, setModalAbierto ] = useState(false); 
   const [ modalForm ] = Form.useForm();
   const handleCancel = () => {
@@ -53,9 +52,9 @@ export default function Predios() {
       ))
       console.log('registro actualizado exitosamente');
     } catch (error) { 
-      console.log("error al actualizar el registro")
-      
+      console.log("error al actualizar el registro")      
     }
+    handleCancel();
   }
   const selectPredio = (predio) => {
     console.log("🚀 ~ record", predio.propietarios)
@@ -156,44 +155,16 @@ export default function Predios() {
       },
     ];  
 
-  const onFinish = (values) => {
-    console.log('Success:', values);
-    try {
-      
-      crearPredio ((
-        {
-          variables: {
-            numpre: values.nopredial,
-            nombre: values.nombre,
-            valor: values.valor,
-            depto:  values.depto,
-            municipio: values.municipio,
-            propietarios: values.propietarios
-          }
-        }
-      ))
-      console.log('registro creado correctamente')
-    } catch (error) {
-      console.log('error al crear registro', error);
-    }
-  };
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
-  const onRequiredTypeChange = ({ requiredMarkValue }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
   return (
-     <>
-     <Menu/>
+    <>
+      <Menu />
       <Button type="primary">
-        <Link href="/predios/nuevo"> agregar nuevo predio </Link>
-        </Button>
+        <Link href="/predios/nuevo"> Agregar nuevo predio </Link>
+      </Button>
       <Table
-      dataSource={dataTabla}
-      columns={columns}
-      size='large' />
+        dataSource={dataTabla}
+        columns={columns}
+        size='large' />
       <Modal
         title="Editando predio"
         cancelText="Cancelar"
@@ -202,96 +173,96 @@ export default function Predios() {
         onOk={modalForm.submit}
         onCancel={handleCancel}>
 
-          <Form
-            form={modalForm}
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-            onFinish={editPredio}
+        <Form
+          form={modalForm}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 8 }}
+          onFinish={editPredio}
+        >
+          <Form.Item label="ID" name="id" hidden>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Id predio"
+            name="idPredio"
           >
-                  <Form.Item label="ID" name="id" hidden>
-                    <Input />
-                  </Form.Item>                  
-                  <Form.Item
-                label="Id predio"
-                name="idPredio"       
-              >
-                <Input disabled />
-              </Form.Item>
-              <Form.Item
-                label="Numero Predial"
-                name="nopredial"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Ingresa el numero predial',
-                  },
-                ]}
-              >
-                <Input/>
-              </Form.Item>        
-              <Form.Item
-                label="Avaluo"
-                name="valor"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Ingrese el avaluo de tu predio',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Nombre"
-                name="nombre"              
-                rules={[
-                  {
-                    required: true,
-                    message: 'Ingrese el nombre del predio',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Departamento"
-                name="depto"                
-                rules={[
-                  {
-                    required: true,
-                    message: 'Ingrese el departamento asociado a tu predio',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Municipio"
-                name="municipio"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Ingrese el municipio asociado a tu predio',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item
-                label="Propietarios"
-                name="propietarios"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Ingresa el propietario del predio',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>             
-             
-          </Form>
+            <Input disabled />
+          </Form.Item>
+          <Form.Item
+            label="Numero Predial"
+            name="nopredial"
+            rules={[
+              {
+                required: true,
+                message: 'Ingresa el numero predial',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Avaluo"
+            name="valor"
+            rules={[
+              {
+                required: true,
+                message: 'Ingrese el avaluo de tu predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Nombre"
+            name="nombre"
+            rules={[
+              {
+                required: true,
+                message: 'Ingrese el nombre del predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Departamento"
+            name="depto"
+            rules={[
+              {
+                required: true,
+                message: 'Ingrese el departamento asociado a tu predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Municipio"
+            name="municipio"
+            rules={[
+              {
+                required: true,
+                message: 'Ingrese el municipio asociado a tu predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Propietarios"
+            name="propietarios"
+            rules={[
+              {
+                required: true,
+                message: 'Ingresa el propietario del predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+        </Form>
       </Modal>
-      </>
+    </>
    )
 }

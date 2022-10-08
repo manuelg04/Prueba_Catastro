@@ -114,6 +114,33 @@ query Propietarios {
   }
 `
 
+export const CREATE_CONSTRUCION_MUTATION  = gql `  
+
+    mutation createConstruccione (
+                $idpredio: Int!,
+                $numPisos: String,
+                $areaTotal: String,
+                $tipoCons: String,
+                $direccion: String,
+    ) {
+      createConstruccione (
+      input: {
+        construccione: {
+                idpredio: $idpredio,
+                numPisos: $numPisos,
+                areaTotal: $areaTotal,
+                tipoCons: $tipoCons,
+                direccion: $direccion
+        }
+      }
+    ) {
+      construccione{
+        id
+      }
+    }
+  }
+`
+
 export const CREATE_PROPIETARIO_MUTATION  = gql `  
 
   mutation createPropietario (
@@ -146,8 +173,40 @@ export const CREATE_PROPIETARIO_MUTATION  = gql `
   }
   }
 `
+export const UPDATE_PROPIETARIO_MUTATION = gql `
 
-export const DELETE_PROPITARIO_MUTATION = gql `
+  mutation updatePropietarioById (
+              $id: Int!
+              $tipoprop: String,
+              $tipodoc: String,
+              $numdoc: String!,
+              $nombre: String,
+              $direccion: String,
+              $telefono: String,
+              $email: String
+  ) {
+    updatePropietarioById (
+      input: {
+        propietarioPatch: {
+              tipoprop: $tipoprop,
+              tipodoc: $tipodoc, 
+              numdoc: $numdoc,
+              nombre: $nombre,
+              direccion: $direccion,
+              telefono: $telefono,
+              email: $email
+        },
+        id: $id
+      }
+    ) {
+      propietario {
+        id
+      }
+    }
+  }
+`
+
+export const DELETE_PROPIETARIO_MUTATION = gql `
 
     mutation deletePropietarioById (
       $id: Int!

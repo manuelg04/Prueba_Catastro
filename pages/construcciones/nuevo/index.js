@@ -1,96 +1,120 @@
-import Menu from "../../menu";
-import { InfoCircleOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Radio } from 'antd';
+import Menu from '../../menu';
+import { useMutation } from '@apollo/client';
+import { Button, Form, Input } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { Select } from 'antd';
+import { CREATE_CONSTRUCION_MUTATION } from "../../../backend/graphql/mutaciones";
 
 
-
-
-export default function Construcciones() {
+export default function Propietarios() {
   const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] = useState('optional');
+  const [crearConstruccion, { data, error } ] = useMutation ( CREATE_CONSTRUCION_MUTATION )
 
-  const onRequiredTypeChange = ({ requiredMarkValue }) => {
-    setRequiredMarkType(requiredMarkValue);
+  const onFinish = (values) => {    
+      const idPredio = parseInt(values.idpredio);
+    try {
+      crearConstruccion ((        
+        {
+          variables: {
+            idpredio: idPredio,
+            numPisos: values.numPisos,
+            areaTotal: values.areaTotal,
+            tipoCons: values.tipoCons,
+            direccion: values.direccion
+          }
+        }
+      ))
+      console.log('registro creado correctamente')
+
+    } catch (error) {
+      console.log("error al crear el registro", error)
+    }
+
   };
 
-  const { Option } = Select;
-  //logica
+
   return (
-   <>
-   <Menu/>
-   <h1>Esta es la pagina de construcciones</h1>
-
-
-   <Select
-    showSearch
-    style={{
-      width: 200,
-    }}
-    placeholder="Tipo de construccion"
-    optionFilterProp="children"
-    filterOption={(input, option) => option.children.includes(input)}
-    filterSort={(optionA, optionB) =>
-      optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-    }
-  >
-    <Option value="1">Industrial</Option>
-    <Option value="2">Comercial</Option>
-    <Option value="2">Residencial</Option>
-   
-  </Select>
-
-
-   <Form
-      form={form}
-      layout="vertical"
-      initialValues={{
-        requiredMarkValue: requiredMark,
-      }}
-      onValuesChange={onRequiredTypeChange}
-      requiredMark={requiredMark}
-    >
-
-
-<Form.Item
-         label="Id predio"
-         name="idPredio"
-         rules={[
-           {
-             required: true,
-             message: 'Ingresa el numero predial',
-           },
-         ]}
-       >
-         <Input />
-       </Form.Item>
-
-
-
-        
-     <Form.Item label="Numero de pisos" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-     
-      <Form.Item label="Direccion" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-      <Form.Item
-        label="Area total" 
-        tooltip={{
-          title: 'Tooltip with customize icon',
-          icon: <InfoCircleOutlined />,
-        }}
-      >
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary">Submit</Button>
-      </Form.Item>
-    </Form>
-   
-   </>
+      <>
+          <Menu />
+          <h1>Esta es la pagina para CREAR Construcciones</h1>
+          <Form
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              onFinish={onFinish}
+          //onFinishFailed={onFinishFailed}
+          >
+              <Form.Item
+                  label="id"
+                  name="id"
+              >
+                  <Input disabled />
+              </Form.Item>
+              <Form.Item
+                  label="id Predio"
+                  name="idpredio"
+              >
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                  label="Numero de pisos"
+                  name="numPisos"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Ingresa el numero de pisos de tu construccion',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                  label="Area total de la construccion"
+                  name="areaTotal"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Ingresa el area total de tu construccion',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                  label="Tipo de construccion"
+                  name="tipoCons"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Ingresa el tipo de construccion',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                  label="Direccion"
+                  name="direccion"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Ingresa la direccion de tu construccion',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                  wrapperCol={{
+                      offset: 8,
+                      span: 16,
+                  }}
+              >
+                  <Button type="primary" htmlType="submit">
+                      Submit
+                  </Button>
+              </Form.Item>
+          </Form>
+      </>
   )
 }
