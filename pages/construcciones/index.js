@@ -2,159 +2,263 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Button, Form, Input, Modal, Radio, Table } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { CREATE_PROPIETARIO_MUTATION, DELETE_PROPIETARIO_MUTATION, QUERY_ALL_PROPIETARIOS, REFRESH_QUERY_PROPIETARIOS, UPDATE_PROPIETARIO_MUTATION,  } from "../../backend/graphql/mutaciones";
-import Menu from "../menu";
+import { DELETE_PREDIO_MUTATION, QUERY_ALL_CONSTRUCCIONES, REFRESH_QUERY_PREDIOS, UPDATE_PREDIO_MUTATION, } from "../../backend/graphql/mutaciones";
+import Menu from '../menu';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Link from 'next/link';
 
-
-
-
-
-export default function Construcciones() {
-
-  const [requiredMark, setRequiredMarkType] = useState('optional');
-  //const { data, loading, error } = useQuery ( QUERY_ALL_PROPIETARIOS );
-  //const [ updatePropietario ] = useMutation ( UPDATE_PROPIETARIO_MUTATION, REFRESH_QUERY_PROPIETARIOS );
-  //const [ deletePropietario ] = useMutation ( DELETE_PROPIETARIO_MUTATION, REFRESH_QUERY_PROPIETARIOS );
+export default function Predios() {
+  //logica
+  const { data, loading, error } = useQuery ( QUERY_ALL_CONSTRUCCIONES );
+  const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
+  const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS)
   const [ ModalAbierto, setModalAbierto ] = useState(false); 
   const [ modalForm ] = Form.useForm();
   const handleCancel = () => {
     setModalAbierto(false);
   };  
 
+  const onBorrarPredio = (values) => {
+    try {
+      deletePredio((
+        {
+          variables: {
+            idPredio: values.idPredio,
+          }
+        }
+      ));
+      console.log('registro eliminado con exito');
+    } catch (error) {
+      console.log('error al eliminar registro', error);
+      
+    }
 
-  const onRequiredTypeChange = ({ requiredMarkValue }) => {
-    setRequiredMarkType(requiredMarkValue);
-  };
+  }
+  const editPredio = (values) => {
+    console.log("🚀 ~ values", values)
+    try {
+      updatePredio((
+        {
+          variables: {
+            idPredio: values.idPredio,
+            numpre: values.nopredial,
+            nombre: values.nombre,
+            valor: values.valor,
+            depto:  values.depto,
+            municipio: values.municipio,
+            propietarios: values.propietarios
+          }
+        }
+      ))
+      console.log('registro actualizado exitosamente');
+    } catch (error) { 
+      console.log("error al actualizar el registro")      
+    }
+    handleCancel();
+  }
+  const selectPredio = (predio) => {
+    console.log("🚀 ~ record", predio.propietarios)
+    
+    setModalAbierto(true);
+    modalForm.setFieldsValue({
+      idPredio: predio.idPredio,      
+      nopredial: predio.numpre,
+      valor: predio.valor,
+      nombre: predio.nombre,
+      depto: predio.depto,
+      municipio: predio.municipio,
+      propietario: predio.propietario,
+      construcciones: predio.construcciones,
+      terreno: predio.terreno,
+      propietarios: predio.propietarios
 
-  const { Option } = Select;
+    });    
+  }
 
 
   const dataTabla =   
-  data?.allPropietarios.edges.map(
+  data?.allConstrucciones.edges.map(
     (edge) => {
+        return (                        
+                  {
+                    id: edge.node.id,
+                    idPredio: edge.node.idPredio,
+                    numPisos: edge.node.numPisos,
+                    areaTotal: edge.node.areaTotal,
+                    tipoCons: edge.node.tipoCons,
+                    direccion:  edge.node.direccion,
+                  
+                  }                        
+                )}
+    )
+
+    const columns = [
+        
+      {
+        title: 'id',
+        dataIndex: 'id',
+        key: 'id',
+      },
+      {
+        title: 'idPredio',
+        dataIndex: 'idPredio',
+        key: 'idPredio',
+      },
+      {
+        title: 'Numero de pisos',
+        dataIndex: 'numPisos',
+        key: 'numPisos',
+      },
+      {
+        title: 'Area total',
+        dataIndex: 'areaTotal',
+        key: 'areaTotal',
+      },
+      {
+        title: 'Tipo de construccion',
+        dataIndex: 'tipoCons',
+        key: 'tipoCons',
+      },
+      {
+        title: 'Direccion',
+        dataIndex: 'direccion',
+        key: 'direccion',
+      },
+      
+      {
+        title: 'Acciones',
+        dataIndex: 'acciones',
+        key: 'acciones',
+        render: (x, predio) => {
+          return (
+            <>
+            
+              <EditOutlined      
+              onClick={() => {
+                selectPredio(predio);
+              }}
+              />
+
+              <DeleteOutlined
+                onClick={() => {
+                  onBorrarPredio(predio);
+                }}
+                style={{ color: "red", marginLeft: 20 }}
+              />
+            </>
+          );
+        },
+      },
+    ];  
+
   return (
+    <>
+      <Menu />
+      <Button type="primary">
+        <Link href="/predios/nuevo"> Agregar nuevo predio </Link>
+      </Button>
+      <Table
+        dataSource={dataTabla}
+        columns={columns}
+        size='large' />
+      <Modal
+        title="Editando predio"
+        cancelText="Cancelar"
+        okText="Guardar"
+        visible={ModalAbierto}
+        onOk={modalForm.submit}
+        onCancel={handleCancel}>
 
-    {
-      id: edge.node.id,
-      tipoprop: edge.node.tipoprop,
-      nombre: edge.node.nombre,
-      tipodoc: edge.node.tipodoc,
-      numdoc:  edge.node.numdoc,
-      telefono: edge.node.telefono,
-      email: edge.node.email,
-      direccion: edge.node.direccion
-    }                        
-  )}
-)
+        <Form
+          form={modalForm}
+          labelCol={{ span: 8 }}
+          wrapperCol={{ span: 8 }}
+          onFinish={editPredio}
+        >
+          <Form.Item label="ID" name="id" hidden>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Id predio"
+            name="idPredio"
+          >
+            <Input disabled />
+          </Form.Item>
+          <Form.Item
+            label="Numero Predial"
+            name="nopredial"
+            rules={[
+              {
+                required: true,
+                message: 'Ingresa el numero predial',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Avaluo"
+            name="valor"
+            rules={[
+              {
+                required: true,
+                message: 'Ingrese el avaluo de tu predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Nombre"
+            name="nombre"
+            rules={[
+              {
+                required: true,
+                message: 'Ingrese el nombre del predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Departamento"
+            name="depto"
+            rules={[
+              {
+                required: true,
+                message: 'Ingrese el departamento asociado a tu predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Municipio"
+            name="municipio"
+            rules={[
+              {
+                required: true,
+                message: 'Ingrese el municipio asociado a tu predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Propietarios"
+            name="propietarios"
+            rules={[
+              {
+                required: true,
+                message: 'Ingresa el propietario del predio',
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-const columns = [
-        
-  {
-    title: 'id',
-    dataIndex: 'id',
-    key: 'id',
-  },
-  {
-    title: 'Numero de pisos',
-    dataIndex: 'numpisos',
-    key: 'numpisos',
-  },
-  {
-      title: 'Area total',
-      dataIndex:  'areatotal',
-      key: 'areatotal',
-    },    
-  {
-    title: 'Tipo de construccion',
-    dataIndex: 'tipocons',
-    key: 'tipocns',
-  },
-  {
-    title: 'Direccion',
-    dataIndex: 'direccion',
-    key: 'direccion',
-  },
-  {
-    title: 'Acciones',
-    dataIndex: 'acciones',
-    key: 'acciones',
-    render: (x, propietario) => {
-      return (
-
-   <>
-   <Menu/>
-   <h1>Esta es la pagina de construcciones</h1>
-
-
-   <Select
-    showSearch
-    style={{
-      width: 200,
-    }}
-    placeholder="Tipo de construccion"
-    optionFilterProp="children"
-    filterOption={(input, option) => option.children.includes(input)}
-    filterSort={(optionA, optionB) =>
-      optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-    }
-  >
-    <Option value="1">Industrial</Option>
-    <Option value="2">Comercial</Option>
-    <Option value="2">Residencial</Option>
-   
-  </Select>
-
-
-   <Form
-      form={form}
-      layout="vertical"
-      initialValues={{
-        requiredMarkValue: requiredMark,
-      }}
-      onValuesChange={onRequiredTypeChange}
-      requiredMark={requiredMark}
-    >
-
-
-<Form.Item
-         label="Id predio"
-         name="idPredio"
-         rules={[
-           {
-             required: true,
-             message: 'Ingresa el numero predial',
-           },
-         ]}
-       >
-         <Input />
-       </Form.Item>
-
-
-
-        
-     <Form.Item label="Numero de pisos" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-     
-      <Form.Item label="Direccion" required tooltip="This is a required field">
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-      <Form.Item
-        label="Area total" 
-        tooltip={{
-          title: 'Tooltip with customize icon',
-          icon: <InfoCircleOutlined />,
-        }}
-      >
-        <Input placeholder="input placeholder" />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary">Submit</Button>
-      </Form.Item>
-    </Form>
-   
-   </>
-  )
+        </Form>
+      </Modal>
+    </>
+   )
 }

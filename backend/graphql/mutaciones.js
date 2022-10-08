@@ -114,6 +114,23 @@ query Propietarios {
   }
 `
 
+export const QUERY_ALL_CONSTRUCCIONES = gql `
+  query Construcciones {
+      allConstrucciones {
+        edges {
+          node {
+            id
+            idpredio
+            numPisos
+            areaTotal
+            tipoCons
+            direccion
+          }
+        }
+      }
+    }
+  `
+
 export const CREATE_CONSTRUCION_MUTATION  = gql `  
 
     mutation createConstruccione (

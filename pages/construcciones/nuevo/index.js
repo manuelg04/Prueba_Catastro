@@ -1,14 +1,16 @@
 import Menu from '../../menu';
-import { useMutation } from '@apollo/client';
-import { Button, Form, Input } from 'antd';
+import { useMutation, useQuery } from '@apollo/client';
+import { Button, Form, Input, Select } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { CREATE_CONSTRUCION_MUTATION } from "../../../backend/graphql/mutaciones";
+import { CREATE_CONSTRUCION_MUTATION, QUERY_ALL_PREDIOS } from "../../../backend/graphql/mutaciones";
 
 
 export default function Propietarios() {
+  const { Option } = Select;
   const [form] = Form.useForm();
-  const [crearConstruccion, { data, error } ] = useMutation ( CREATE_CONSTRUCION_MUTATION )
+  const { data } = useQuery ( QUERY_ALL_PREDIOS);
+  const [crearConstruccion ] = useMutation ( CREATE_CONSTRUCION_MUTATION )
 
   const onFinish = (values) => {    
       const idPredio = parseInt(values.idpredio);
@@ -32,7 +34,6 @@ export default function Propietarios() {
 
   };
 
-
   return (
       <>
           <Menu />
@@ -42,7 +43,6 @@ export default function Propietarios() {
               labelCol={{ span: 8 }}
               wrapperCol={{ span: 16 }}
               onFinish={onFinish}
-          //onFinishFailed={onFinishFailed}
           >
               <Form.Item
                   label="id"
@@ -54,7 +54,15 @@ export default function Propietarios() {
                   label="id Predio"
                   name="idpredio"
               >
-                  <Input />
+                <Select defaultValue="Escoja un predio">
+                {
+                          data?.allPredios.edges.map((edge) => {
+                              return (
+                                  <Option value={edge.node.idPredio}></Option>
+                              )
+                          })
+                }
+                </Select>
               </Form.Item>
               <Form.Item
                   label="Numero de pisos"
