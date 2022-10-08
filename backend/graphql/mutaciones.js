@@ -151,11 +151,57 @@ export const CREATE_CONSTRUCION_MUTATION  = gql `
         }
       }
     ) {
-      construccione{
+      construccione {
         id
       }
     }
   }
+`
+
+export const UPDATE_CONSTRUCCION_MUTATION = gql `
+
+  mutation updateConstruccioneById (
+                $id: Int!
+                $idpredio: Int!,
+                $numPisos: String,
+                $areaTotal: String,
+                $tipoCons: String,
+                $direccion: String,
+  ) {
+    updateConstruccioneById (
+      input: {
+        construccionePatch: {
+                idpredio: $idpredio,
+                numPisos: $numPisos,
+                areaTotal: $areaTotal,
+                tipoCons: $tipoCons,
+                direccion: $direccion
+        },
+        id: $id
+      }
+    ) {
+      construccione {
+        id
+      }
+    }
+  }
+`
+
+export const DELETE_CONSTRUCCION_MUTATION = gql `
+
+    mutation deleteConstruccioneById (
+      $id: Int!
+    ) {
+      deleteConstruccioneById (
+        input: {
+          id: $id
+        }
+      ) {
+        construccione {
+          id
+        }
+      }
+    }
 `
 
 export const CREATE_PROPIETARIO_MUTATION  = gql `  
@@ -258,11 +304,11 @@ export const REFRESH_QUERY_PROPIETARIOS = {
 //   }]
 // }
 
-// export const REFRESH_QUERY_CONSTRUCCIONES = {
-//   refetchQueries: [{ 
-//     query: QUERY_ALL_CONSTRUCCIONES
-//   }]
-// }
+export const REFRESH_QUERY_CONSTRUCCIONES = {
+  refetchQueries: [{ 
+    query: QUERY_ALL_CONSTRUCCIONES
+  }]
+}
 
 
 

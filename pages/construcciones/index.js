@@ -1,29 +1,31 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { Button, Form, Input, Modal, Radio, Table } from 'antd';
+import { Button, Form, Input, Modal, Select, Table } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { DELETE_PREDIO_MUTATION, QUERY_ALL_CONSTRUCCIONES, REFRESH_QUERY_PREDIOS, UPDATE_PREDIO_MUTATION, } from "../../backend/graphql/mutaciones";
+import { DELETE_CONSTRUCCION_MUTATION, QUERY_ALL_CONSTRUCCIONES, QUERY_ALL_PREDIOS, REFRESH_QUERY_CONSTRUCCIONES, UPDATE_CONSTRUCCION_MUTATION } from "../../backend/graphql/mutaciones";
 import Menu from '../menu';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Link from 'next/link';
 
 export default function Predios() {
   //logica
+  const { Option } = Select;
   const { data, loading, error } = useQuery ( QUERY_ALL_CONSTRUCCIONES );
-  const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
-  const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS)
+  const { data: dataPredios } = useQuery ( QUERY_ALL_PREDIOS);
+  const [ updateConstruccion ] = useMutation (UPDATE_CONSTRUCCION_MUTATION, REFRESH_QUERY_CONSTRUCCIONES)
+  const [ deleteConstruccion ] = useMutation ( DELETE_CONSTRUCCION_MUTATION, REFRESH_QUERY_CONSTRUCCIONES);
   const [ ModalAbierto, setModalAbierto ] = useState(false); 
   const [ modalForm ] = Form.useForm();
   const handleCancel = () => {
     setModalAbierto(false);
   };  
 
-  const onBorrarPredio = (values) => {
+  const onBorrarConstruccion = (values) => {
     try {
-      deletePredio((
+      deleteConstruccion((
         {
           variables: {
-            idPredio: values.idPredio,
+            id: values.id,
           }
         }
       ));
@@ -34,19 +36,17 @@ export default function Predios() {
     }
 
   }
-  const editPredio = (values) => {
-    console.log("🚀 ~ values", values)
+  const editConstruccion = (values) => {
     try {
-      updatePredio((
+      updateConstruccion((
         {
           variables: {
-            idPredio: values.idPredio,
-            numpre: values.nopredial,
-            nombre: values.nombre,
-            valor: values.valor,
-            depto:  values.depto,
-            municipio: values.municipio,
-            propietarios: values.propietarios
+            id: values.id,
+            idpredio: values.idpredio,
+            numPisos: values.numPisos,
+            areaTotal: values.areaTotal,
+            tipoCons: values.tipoCons,
+            direccion: values.direccion
           }
         }
       ))
@@ -56,21 +56,16 @@ export default function Predios() {
     }
     handleCancel();
   }
-  const selectPredio = (predio) => {
-    console.log("🚀 ~ record", predio.propietarios)
+  const selectPredio = (construccion) => {
     
     setModalAbierto(true);
     modalForm.setFieldsValue({
-      idPredio: predio.idPredio,      
-      nopredial: predio.numpre,
-      valor: predio.valor,
-      nombre: predio.nombre,
-      depto: predio.depto,
-      municipio: predio.municipio,
-      propietario: predio.propietario,
-      construcciones: predio.construcciones,
-      terreno: predio.terreno,
-      propietarios: predio.propietarios
+      id: construccion.id,
+      idpredio: construccion.idpredio,      
+      numPisos: construccion.numPisos,
+      areaTotal: construccion.areaTotal,
+      tipoCons: construccion.tipoCons,
+      direccion: construccion.direccion
 
     });    
   }
@@ -82,7 +77,7 @@ export default function Predios() {
         return (                        
                   {
                     id: edge.node.id,
-                    idPredio: edge.node.idPredio,
+                    idpredio: edge.node.idpredio,
                     numPisos: edge.node.numPisos,
                     areaTotal: edge.node.areaTotal,
                     tipoCons: edge.node.tipoCons,
@@ -91,7 +86,7 @@ export default function Predios() {
                   }                        
                 )}
     )
-
+    
     const columns = [
         
       {
@@ -101,8 +96,8 @@ export default function Predios() {
       },
       {
         title: 'idPredio',
-        dataIndex: 'idPredio',
-        key: 'idPredio',
+        dataIndex: 'idpredio',
+        key: 'idpredio',
       },
       {
         title: 'Numero de pisos',
@@ -129,19 +124,19 @@ export default function Predios() {
         title: 'Acciones',
         dataIndex: 'acciones',
         key: 'acciones',
-        render: (x, predio) => {
+        render: (x, construccion) => {
           return (
             <>
             
               <EditOutlined      
               onClick={() => {
-                selectPredio(predio);
+                selectPredio(construccion);
               }}
               />
 
               <DeleteOutlined
                 onClick={() => {
-                  onBorrarPredio(predio);
+                  onBorrarConstruccion(construccion);
                 }}
                 style={{ color: "red", marginLeft: 20 }}
               />
@@ -155,7 +150,7 @@ export default function Predios() {
     <>
       <Menu />
       <Button type="primary">
-        <Link href="/predios/nuevo"> Agregar nuevo predio </Link>
+        <Link href="/construcciones/nuevo"> Agregar nueva construccion </Link>
       </Button>
       <Table
         dataSource={dataTabla}
@@ -173,89 +168,76 @@ export default function Predios() {
           form={modalForm}
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 8 }}
-          onFinish={editPredio}
+          onFinish={editConstruccion}
         >
-          <Form.Item label="ID" name="id" hidden>
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Id predio"
-            name="idPredio"
-          >
-            <Input disabled />
-          </Form.Item>
-          <Form.Item
-            label="Numero Predial"
-            name="nopredial"
-            rules={[
-              {
-                required: true,
-                message: 'Ingresa el numero predial',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Avaluo"
-            name="valor"
-            rules={[
-              {
-                required: true,
-                message: 'Ingrese el avaluo de tu predio',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Nombre"
-            name="nombre"
-            rules={[
-              {
-                required: true,
-                message: 'Ingrese el nombre del predio',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Departamento"
-            name="depto"
-            rules={[
-              {
-                required: true,
-                message: 'Ingrese el departamento asociado a tu predio',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Municipio"
-            name="municipio"
-            rules={[
-              {
-                required: true,
-                message: 'Ingrese el municipio asociado a tu predio',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            label="Propietarios"
-            name="propietarios"
-            rules={[
-              {
-                required: true,
-                message: 'Ingresa el propietario del predio',
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+         <Form.Item
+                  label="id"
+                  name="id"
+              >
+                  <Input disabled />
+              </Form.Item>
+              <Form.Item
+                  label="id Predio"
+                  name="idpredio"
+              >
+                <Select defaultValue="Escoja un predio">
+                {
+                          dataPredios?.allPredios.edges.map((edge) => {
+                              return (
+                                  <Option value={edge.node.idPredio}></Option>
+                              )
+                          })
+                }
+                </Select>
+              </Form.Item>
+              <Form.Item
+                  label="Numero de pisos"
+                  name="numPisos"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Ingresa el numero de pisos de tu construccion',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                  label="Area total de la construccion"
+                  name="areaTotal"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Ingresa el area total de tu construccion',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                  label="Tipo de construccion"
+                  name="tipoCons"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Ingresa el tipo de construccion',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
+              <Form.Item
+                  label="Direccion"
+                  name="direccion"
+                  rules={[
+                      {
+                          required: true,
+                          message: 'Ingresa la direccion de tu construccion',
+                      },
+                  ]}
+              >
+                  <Input />
+              </Form.Item>
 
         </Form>
       </Modal>
