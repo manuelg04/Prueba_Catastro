@@ -1,14 +1,62 @@
-
 import { useMutation, useQuery } from '@apollo/client';
-import { Button, Form, Input, Radio, Table } from 'antd';
+import { Button, Form, Input, Modal, Radio, Table } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { CREATE_PREDIO_MUTATION, QUERY_ALL_PREDIOS,  } from "../../backend/graphql/mutaciones";
+import { CREATE_PREDIO_MUTATION, DELETE_PREDIO_MUTATION, QUERY_ALL_PREDIOS, REFRESH_QUERY_PREDIOS,  } from "../../backend/graphql/mutaciones";
 import Menu from '../menu';
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import Link from 'next/link';
 
 export default function Predios() {
   //logica
   const { data, loading, error } = useQuery ( QUERY_ALL_PREDIOS );
+  const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
+  //console.log("🚀 ~ data", data)
+  const [ ModalAbierto, setModalAbierto ] = useState(false); 
+  const [ modalForm ] = Form.useForm();
+  const handleCancel = () => {
+    setModalAbierto(false);
+  };  
+
+  const onDeletePredio = (values) => {
+    const idaBorrar =  parseInt(values.idPredio);
+    console.log("🚀 ~ idaBorrar", typeof(idaBorrar));
+    try {
+      deletePredio((
+        {
+          variables: {
+            idPredio: values.idPredio,
+          }
+        }
+      ));
+      console.log('registro eliminado con exito');
+    } catch (error) {
+      console.log('error al eliminar registro', error);
+      
+    }
+
+  }
+  const editPredio = (values) => {
+    console.log("🚀 ~ values", values)
+  }
+  const selectPredio = (predio) => {
+    console.log("🚀 ~ record", predio.propietarios)
+    
+    setModalAbierto(true);
+    modalForm.setFieldsValue({
+      idPredio: predio.idPredio,      
+      nopredial: predio.numpre,
+      valor: predio.valor,
+      nombre: predio.nombre,
+      depto: predio.depto,
+      municipio: predio.municipio,
+      propietario: predio.propietario,
+      construcciones: predio.construcciones,
+      terreno: predio.terreno,
+      propietarios: predio.propietarios
+
+    });    
+  }
 
 
   const dataTabla =   
@@ -21,7 +69,8 @@ export default function Predios() {
                     nombre: edge.node.nombre,
                     valor: edge.node.valor,
                     depto:  edge.node.depto,
-                    municipio: edge.node.municipio
+                    municipio: edge.node.municipio,
+                    propietarios: edge.node.propietarios
                   }                        
                 )}
     )
@@ -57,37 +106,42 @@ export default function Predios() {
         title: 'Municipio',
         dataIndex: 'municipio',
         key: 'municipio',
-      },
-      
-      // {
-      //   title: 'Acciones',
-      //   dataIndex: 'acciones',
-      //   key: 'acciones',
-      //   render: (_: any, record:any) => {
-      //     return (
-      //       <>
-      //         <EditOutlined      
-      //         onClick={() => {
-      //           selectUser(record);
-      //         }}
-      //         />
+      },  
+      {
+        title: 'Propietarios',
+        dataIndex:  'propietarios',
+        key: 'propietarios',
+      },    
+      {
+        title: 'Acciones',
+        dataIndex: 'acciones',
+        key: 'acciones',
+        render: (x, predio) => {
+          return (
+            <>
+            
+              <EditOutlined      
+              onClick={() => {
+                selectPredio(predio);
+              }}
+              />
 
-      //         <DeleteOutlined
-      //           onClick={() => {
-      //             onDeleteUser(record);
-      //           }}
-      //           style={{ color: "red", marginLeft: 20 }}
-      //         />
-      //       </>
-      //     );
-      //   },
-      // },
+              <DeleteOutlined
+                onClick={() => {
+                  onDeletePredio(predio);
+                }}
+                style={{ color: "red", marginLeft: 20 }}
+              />
+            </>
+          );
+        },
+      },
     ];  
 
   const onFinish = (values) => {
     console.log('Success:', values);
     try {
-      //crearPredio
+      
       crearPredio ((
         {
           variables: {
@@ -95,7 +149,8 @@ export default function Predios() {
             nombre: values.nombre,
             valor: values.valor,
             depto:  values.depto,
-            municipio: values.municipio
+            municipio: values.municipio,
+            propietarios: values.propietarios
           }
         }
       ))
@@ -112,10 +167,139 @@ export default function Predios() {
     setRequiredMarkType(requiredMarkValue);
   };
   return (
-                      <Table 
-                        dataSource={dataTabla} 
-                        columns={columns}
-                        size='large'
-                      />
+     <>
+     <Menu/>
+      <Button type="primary">
+        <Link href="/predios/nuevo"> agregar nuevo predio </Link>
+        </Button>
+      <Table
+      dataSource={dataTabla}
+      columns={columns}
+      size='large' />
+      <Modal
+        title="Editando predio"
+        cancelText="Cancelar"
+        okText="Guardar"
+        visible={ModalAbierto}
+        onOk={modalForm.submit}
+        onCancel={handleCancel}>
+
+          <Form
+            form={modalForm}
+            labelCol={{ span: 8 }}
+            wrapperCol={{ span: 8 }}
+            onFinish={editPredio}
+          >
+                  <Form.Item label="ID" name="id" hidden>
+                    <Input />
+                  </Form.Item>                  
+                  <Form.Item
+                label="Id predio"
+                name="idPredio"       
+              >
+                <Input disabled />
+              </Form.Item>
+              <Form.Item
+                label="Numero Predial"
+                name="nopredial"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingresa el numero predial',
+                  },
+                ]}
+              >
+                <Input/>
+              </Form.Item>        
+              <Form.Item
+                label="Avaluo"
+                name="valor"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingrese el avaluo de tu predio',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Nombre"
+                name="nombre"              
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingrese el nombre del predio',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Departamento"
+                name="depto"                
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingrese el departamento asociado a tu predio',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Municipio"
+                name="municipio"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingrese el municipio asociado a tu predio',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                label="Propietarios"
+                name="propietarios"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingresa el propietario del predio',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+              
+              <Form.Item
+                label="Construcciones"
+                name="construcciones"
+                initialValue="Aqui se cargan las construcciones"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Terrenos',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>        
+              <Form.Item
+                label="Terreno"
+                name="terreno"
+                initialValue="Aqui se cargan el terreno"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Ingresa el terreno',
+                  },
+                ]}
+              >
+                <Input />
+              </Form.Item>
+          </Form>
+      </Modal>
+      </>
    )
 }

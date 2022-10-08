@@ -12,6 +12,7 @@ export const QUERY_ALL_PREDIOS = gql `
               valor
               depto
               municipio
+              propietarios
           }
         }
       }
@@ -24,7 +25,8 @@ export const QUERY_ALL_PREDIOS = gql `
             $nombre: String!,
             $valor: String,
             $depto: String, 
-            $municipio: String
+            $municipio: String,
+            $propietarios: String
   ) {
       createPredio (
         input: {
@@ -33,7 +35,8 @@ export const QUERY_ALL_PREDIOS = gql `
             nombre: $nombre,
             valor:  $valor,
             depto: $depto, 
-            municipio: $municipio
+            municipio: $municipio,
+            propietarios: $propietarios
           }
         }
       ) {
@@ -44,14 +47,32 @@ export const QUERY_ALL_PREDIOS = gql `
     }
   `
 
+export const DELETE_PREDIO_MUTATION = gql `
+
+    mutation deletePredioByIdPredio (
+      $idPredio: Int!
+    ) {
+      deletePredioByIdPredio (
+        input: {
+          idPredio: $idPredio
+        }
+      ) {
+        predio {
+          idPredio
+        }
+      }
+    }
+`
+
 export const QUERY_ALL_PROPIETARIOS = gql `
 query Propietarios {
     allPropietarios {
       edges {
-        node {
+        node {  
+            id
             tipoprop
             tipodoc
-            nodoc
+            numdoc
             nombre
             direccion
             telefono
@@ -68,7 +89,7 @@ mutation createPropietario (
       
             $tipoprop: String,
             $tipodoc: String,
-            $nodoc: String!,
+            $numdoc: String!,
             $nombre: String,
             $direccion: String,
             $telefono: String,
@@ -79,7 +100,7 @@ mutation createPropietario (
      propietario: {
             tipoprop: $tipoprop,
             tipodoc: $tipodoc, 
-            nodoc: $nodoc,
+            numdoc: $numdoc,
             nombre: $nombre,
             direccion: $direccion,
             telefono: $telefono,
@@ -94,6 +115,12 @@ mutation createPropietario (
  }
 }
 `
+
+export const REFRESH_QUERY_PREDIOS = {
+  refetchQueries: [{ 
+    query: QUERY_ALL_PREDIOS 
+  }]
+}
 
 
 

@@ -1,13 +1,14 @@
-import Menu from "../../menu";
+import Menu from '../../menu';
+import { useMutation } from '@apollo/client';
 import { Button, Form, Input, Radio } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { useMutation } from '@apollo/client';
 import { CREATE_PROPIETARIO_MUTATION } from "../../../backend/graphql/mutaciones";
 
 
 export default function Propietarios() {
-
+  const [form] = Form.useForm();
+  const [requiredMark, setRequiredMarkType] = useState('optional');
   const [crearPropietario, { data, error } ] = useMutation ( CREATE_PROPIETARIO_MUTATION)
 
   const onFinish = (values) => {
@@ -19,7 +20,7 @@ export default function Propietarios() {
           variables: {
             tipoprop: values.tipoprop,
             tipodoc: values.tipodoc,
-            nodoc: values.numdoc,
+            numdoc: values.numdoc,
             nombre: values.nombre,
             direccion: values.direccion,
             telefono: values.telefono,
@@ -45,23 +46,10 @@ export default function Propietarios() {
       setRequiredMarkType(requiredMarkValue);
     };
 
-    const formSuccess=(datos)=>{
-
-      console.log("Formulario enviado exitosamente ", datos)
-    }
-    const formFailed=(error)=>{
-  
-      console.log("Error : ", error)
-    }
-
-
   return (
    <>
    <Menu/>
-   <h1>Esta es la pagina de propietarios</h1>
-
-
-
+   <h1>Esta es la pagina para CREAR propietarios</h1>
    <Form
       name="basic"
       labelCol={{span: 8}}
@@ -69,10 +57,6 @@ export default function Propietarios() {
       onFinish={onFinish}
       //onFinishFailed={onFinishFailed}
     >
-
-
-
-  
   <Form.Item
          label="Id predio"
          name="idPredio"
@@ -80,16 +64,13 @@ export default function Propietarios() {
        >
          <Input />
        </Form.Item>
-
-
-
        <Form.Item
         label="tipo de propietario"
         name="tipoprop"
         rules={[
           {
             required: true,
-            message: 'Digita el tipo de propietario!',
+            message: 'Ingresa el tipo de propietario, puede ser Persona natural o Juridica',
           },
         ]}
       >
@@ -103,7 +84,7 @@ export default function Propietarios() {
         rules={[
           {
             required: true,
-            message: 'Digita el tipo de documento',
+            message: 'Ingresa tipo de documento, NIT Ó CC',
           },
         ]}
       >
@@ -112,12 +93,12 @@ export default function Propietarios() {
 
 
       <Form.Item
-        label="numero de documento"
+        label="Numero de documento"
         name="numdoc"
         rules={[
           {
             required: true,
-            message: 'Digita numero de su documento',
+            message: 'Ingresa el numero de documento',
           },
         ]}
       >
@@ -130,7 +111,7 @@ export default function Propietarios() {
         rules={[
           {
             required: true,
-            message: 'Digita el nombre!',
+            message: 'Ingresa el nombre o razon social',
           },
         ]}
       >
@@ -144,7 +125,7 @@ export default function Propietarios() {
         rules={[
           {
             required: true,
-            message: 'ingresa tu direccion',
+            message: 'Ingresa tu direccion',
           },
         ]}
       >
@@ -158,7 +139,7 @@ export default function Propietarios() {
         rules={[
           {
             required: true,
-            message: 'Digita tu telefono',
+            message: 'Ingresa tu telefono',
           },
         ]}
       >
@@ -172,7 +153,7 @@ export default function Propietarios() {
         rules={[
           {
             required: true,
-            message: 'Ingresa tu correo!',
+            message: 'Ingresa tu correo',
           },
         ]}
       >

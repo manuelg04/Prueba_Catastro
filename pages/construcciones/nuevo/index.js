@@ -60,7 +60,7 @@ export default function Construcciones() {
          rules={[
            {
              required: true,
-             message: 'Digita el numero predial!',
+             message: 'Ingresa el numero predial',
            },
          ]}
        >

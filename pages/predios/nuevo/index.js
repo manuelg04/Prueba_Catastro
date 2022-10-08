@@ -22,7 +22,8 @@ export default function Predios() {
             nombre: values.nombre,
             valor: values.valor,
             depto:  values.depto,
-            municipio: values.municipio
+            municipio: values.municipio,
+            propietarios: values.propietarios
           }
         }
       ))
@@ -61,7 +62,7 @@ export default function Predios() {
          rules={[
            {
              required: true,
-             message: 'Please input your username!',
+             message: 'Ingresa el numero predial',
            },
          ]}
        >
@@ -74,7 +75,7 @@ export default function Predios() {
          rules={[
            {
              required: true,
-             message: 'Ingrese el avaluo',
+             message: 'Ingrese el avaluo de tu predio',
            },
          ]}
        >
@@ -89,7 +90,7 @@ export default function Predios() {
          rules={[
            {
              required: true,
-             message: 'Ingrese el nombre',
+             message: 'Ingrese el nombre de tu predio',
            },
          ]}
        >
@@ -103,7 +104,7 @@ export default function Predios() {
          rules={[
            {
              required: true,
-             message: 'Ingrese el dpto',
+             message: 'Ingresa el departamento asociado',
            },
          ]}
        >
@@ -116,7 +117,7 @@ export default function Predios() {
          rules={[
            {
              required: true,
-             message: 'Ingrese el municipio',
+             message: 'Ingresa el municipio asociado',
            },
          ]}
        >
@@ -125,50 +126,19 @@ export default function Predios() {
 
 
        <Form.Item
-         label="Propietario"
-         name="propietario"
-         initialValue="Aqui se cargan el propietario"
+         label="Propietarios"
+         name="propietarios"
          rules={[
            {
              required: true,
-             message: 'Digita el valor comercial el terreno!',
+             message: 'Ingresa el propietario asociado',
            },
          ]}
        >
          <Input />
-       </Form.Item>
-
-       <Form.Item
-         label="Construcciones"
-         name="construcciones"
-         initialValue="Aqui se cargan las construcciones"
-         rules={[
-           {
-             required: true,
-             message: 'Terrenos',
-           },
-         ]}
-       >
-         <Input />
-       </Form.Item>
- 
-       <Form.Item
-         label="Terreno"
-         name="terreno"
-         initialValue="Aqui se cargan el terreno"
-         rules={[
-           {
-             required: true,
-             message: 'Ingrese terreno',
-           },
-         ]}
-       >
-         <Input />
-       </Form.Item>
+       </Form.Item>   
 
 
-
-      
        <Form.Item
          wrapperCol={{
            offset: 8,

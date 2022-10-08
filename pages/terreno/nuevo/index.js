@@ -1,4 +1,4 @@
-import Menu from "../../menu";
+import Menu from "../menu";
 import { Button, Form, Input} from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
@@ -45,7 +45,7 @@ export default function Home() {
          rules={[
            {
              required: true,
-             message: 'Digita el numero predial!',
+             message: 'Ingresa el numero predial',
            },
          ]}
        >
@@ -61,7 +61,7 @@ export default function Home() {
         rules={[
           {
             required: true,
-            message: 'Digita el tipo del terreno!',
+            message: 'Indica que tipo de terreno es',
           },
         ]}
       >
@@ -73,7 +73,7 @@ export default function Home() {
         rules={[
           {
             required: true,
-            message: 'Please input your username!',
+            message: 'Indica el area asociada a tu terreno',
           },
         ]}
       >
@@ -86,7 +86,7 @@ export default function Home() {
         rules={[
           {
             required: true,
-            message: 'Digita el valor comercial el terreno!',
+            message: 'Ingresa el valor comercial',
           },
         ]}
       >
@@ -99,7 +99,7 @@ export default function Home() {
         rules={[
           {
             required: true,
-            message: '¿Tiene cerca fuentes de agua?',
+            message: 'Indica si, ¿Tiene cerca fuentes de agua?',
           },
         ]}
       >
@@ -112,7 +112,7 @@ export default function Home() {
         rules={[
           {
             required: true,
-            message: '¿Tiene construcciones dentro de el?',
+            message: 'Indica si, ¿Tiene construcciones dentro de el?',
           },
         ]}
       >
