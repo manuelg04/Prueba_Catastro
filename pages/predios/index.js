@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Button, Form, Input, Modal, Radio, Table } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { CREATE_PREDIO_MUTATION, DELETE_PREDIO_MUTATION, QUERY_ALL_PREDIOS, REFRESH_QUERY_PREDIOS,  } from "../../backend/graphql/mutaciones";
+import { CREATE_PREDIO_MUTATION, DELETE_PREDIO_MUTATION, QUERY_ALL_PREDIOS, REFRESH_QUERY_PREDIOS, UPDATE_PREDIO_MUTATION,  } from "../../backend/graphql/mutaciones";
 import Menu from '../menu';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Link from 'next/link';
@@ -11,6 +11,7 @@ export default function Predios() {
   //logica
   const { data, loading, error } = useQuery ( QUERY_ALL_PREDIOS );
   const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
+  const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS)
   //console.log("🚀 ~ data", data)
   const [ ModalAbierto, setModalAbierto ] = useState(false); 
   const [ modalForm ] = Form.useForm();
@@ -18,9 +19,7 @@ export default function Predios() {
     setModalAbierto(false);
   };  
 
-  const onDeletePredio = (values) => {
-    const idaBorrar =  parseInt(values.idPredio);
-    console.log("🚀 ~ idaBorrar", typeof(idaBorrar));
+  const onBorrarPredio = (values) => {
     try {
       deletePredio((
         {
@@ -38,6 +37,25 @@ export default function Predios() {
   }
   const editPredio = (values) => {
     console.log("🚀 ~ values", values)
+    try {
+      updatePredio((
+        {
+          variables: {
+            idPredio: values.idPredio,
+            numpre: values.nopredial,
+            nombre: values.nombre,
+            valor: values.valor,
+            depto:  values.depto,
+            municipio: values.municipio,
+            propietarios: values.propietarios
+          }
+        }
+      ))
+      console.log('registro actualizado exitosamente');
+    } catch (error) { 
+      console.log("error al actualizar el registro")
+      
+    }
   }
   const selectPredio = (predio) => {
     console.log("🚀 ~ record", predio.propietarios)
@@ -128,7 +146,7 @@ export default function Predios() {
 
               <DeleteOutlined
                 onClick={() => {
-                  onDeletePredio(predio);
+                  onBorrarPredio(predio);
                 }}
                 style={{ color: "red", marginLeft: 20 }}
               />
@@ -270,34 +288,8 @@ export default function Predios() {
                 ]}
               >
                 <Input />
-              </Form.Item>
-              
-              <Form.Item
-                label="Construcciones"
-                name="construcciones"
-                initialValue="Aqui se cargan las construcciones"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Terrenos',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>        
-              <Form.Item
-                label="Terreno"
-                name="terreno"
-                initialValue="Aqui se cargan el terreno"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Ingresa el terreno',
-                  },
-                ]}
-              >
-                <Input />
-              </Form.Item>
+              </Form.Item>             
+             
           </Form>
       </Modal>
       </>
