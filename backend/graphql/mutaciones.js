@@ -203,6 +203,34 @@ export const DELETE_CONSTRUCCION_MUTATION = gql `
       }
     }
 `
+export const CREATE_TERRENO_MUTATION  = gql `  
+
+    mutation createTerreno (
+            $idpredio: Int!,
+            $area: String,
+            $valorComer: String,
+            $tipoTerre: String,
+            $consDentro: String,
+            $fuenAgua: String          
+    ) {
+      createTerreno (
+      input: {
+        terreno: {
+                idpredio: $idpredio,
+                area: $area,
+                valorComer: $valorComer,
+                tipoTerre: $tipoTerre,
+                consDentro: $consDentro,
+                fuenAgua: $fuenAgua
+        }
+      }
+    ) {
+      terreno {
+        id
+      }
+    }
+  }
+`
 
 export const CREATE_PROPIETARIO_MUTATION  = gql `  
 
