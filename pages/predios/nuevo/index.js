@@ -4,14 +4,15 @@ import { Button, Form, Input, Radio } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { CREATE_PREDIO_MUTATION } from "../../../backend/graphql/mutaciones";
+import { useRouter } from 'next/router';
 
 export default function Predios() {
   //logica
   const [form] = Form.useForm();
+  const router = useRouter();
   const [crearPredio, { data, error } ] = useMutation ( CREATE_PREDIO_MUTATION)
 
   const onFinish = (values) => {
-    console.log('Success:', values);
     try {
       crearPredio ((
         {
@@ -29,6 +30,7 @@ export default function Predios() {
     } catch (error) {
       console.log('error al crear registro', error);
     }
+    router.push('http://localhost:3000/predios');
   };
   
   return (
@@ -41,12 +43,7 @@ export default function Predios() {
         wrapperCol={{ span: 16 }}
         onFinish={onFinish}
       >
-        <Form.Item
-          label="Id predio"
-          name="idpredio"
-        >
-          <Input disabled />
-        </Form.Item>
+        
         <Form.Item
           label="Numero Predial"
           name="nopredial"
@@ -128,7 +125,7 @@ export default function Predios() {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            Guardar
           </Button>
         </Form.Item>
       </Form>

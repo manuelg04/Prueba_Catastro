@@ -4,13 +4,15 @@ import { Button, Form, Input, Select } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { CREATE_TERRENO_MUTATION, QUERY_ALL_PREDIOS } from "../../../backend/graphql/mutaciones";
+import { useRouter } from 'next/router';
 
 
 export default function Terrenos() {
   const { Option } = Select;
   const [ form ] = Form.useForm();
   const { data } = useQuery ( QUERY_ALL_PREDIOS);
-  const [ crearTerreno ] = useMutation ( CREATE_TERRENO_MUTATION )
+  const router = useRouter();
+  const [ crearTerreno ] = useMutation ( CREATE_TERRENO_MUTATION );
 
   const onFinish = (values) => {    
       const idpredioInt = parseInt(values.idpredio);
@@ -32,8 +34,8 @@ export default function Terrenos() {
 
     } catch (error) {
       console.log("error al crear el registro", error)
-    }
-
+    }    
+    router.push('http://localhost:3000/terreno');
   };
 
   return (
@@ -129,7 +131,7 @@ export default function Terrenos() {
                   }}
               >
                   <Button type="primary" htmlType="submit">
-                      Submit
+                      Guardar
                   </Button>
               </Form.Item>
           </Form>

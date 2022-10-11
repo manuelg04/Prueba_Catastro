@@ -35,7 +35,6 @@ export default function Predios() {
 
   }
   const editPredio = (values) => {
-    console.log("🚀 ~ values", values)
     try {
       updatePredio((
         {
@@ -57,7 +56,6 @@ export default function Predios() {
     handleCancel();
   }
   const selectPredio = (predio) => {
-    console.log("🚀 ~ record", predio.propietarios)
     
     setModalAbierto(true);
     modalForm.setFieldsValue({

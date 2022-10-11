@@ -61,7 +61,6 @@ export default function Propietarios() {
   }
 
   const selectPropietario = (propietario) => {
-    console.log("🚀 ~ record", propietario.nombre)
     
     setModalAbierto(true);
     modalForm.setFieldsValue({
@@ -160,7 +159,6 @@ export default function Propietarios() {
 
 
   const onFinish = (values) => {
-    console.log('Success:', values);
     try {
       crearPropietario ((
         
@@ -209,7 +207,6 @@ export default function Propietarios() {
           labelCol={{ span: 8 }}
           wrapperCol={{ span: 16 }}
           onFinish={editPropietario}
-        //onFinishFailed={onFinishFailed}
         >
 
           <Form.Item label="ID" name="id" hidden>

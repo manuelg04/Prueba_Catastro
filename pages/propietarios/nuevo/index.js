@@ -4,16 +4,17 @@ import { Button, Form, Input, Select } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { CREATE_PROPIETARIO_MUTATION, QUERY_ALL_PREDIOS } from "../../../backend/graphql/mutaciones";
+import { useRouter } from 'next/router';
 
 
 export default function Propietarios() {
   const { Option } = Select;
   const [form] = Form.useForm();
+  const router = useRouter();
   const { data } = useQuery ( QUERY_ALL_PREDIOS);
   const [ crearPropietario ] = useMutation ( CREATE_PROPIETARIO_MUTATION)
 
   const onFinish = (values) => {
-    console.log('Success:', values);
     try {
       crearPropietario ((
         
@@ -35,17 +36,8 @@ export default function Propietarios() {
     } catch (error) {
       console.log("error al crear el registro", error)
     }
-
+    router.push('http://localhost:3000/propietarios');
   };
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
-  };
-
-
-
-    const onRequiredTypeChange = ({ requiredMarkValue }) => {
-      setRequiredMarkType(requiredMarkValue);
-    };
 
   return (
     <>
@@ -56,7 +48,6 @@ export default function Propietarios() {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         onFinish={onFinish}
-      //onFinishFailed={onFinishFailed}
       >
         <Form.Item
                   label="id Predio"
@@ -163,7 +154,7 @@ export default function Propietarios() {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            Guardar
           </Button>
         </Form.Item>
       </Form>

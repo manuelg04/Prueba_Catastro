@@ -4,11 +4,13 @@ import { Button, Form, Input, Select } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
 import { CREATE_CONSTRUCION_MUTATION, QUERY_ALL_PREDIOS } from "../../../backend/graphql/mutaciones";
+import { useRouter } from 'next/router';
 
 
 export default function Propietarios() {
   const { Option } = Select;
   const [form] = Form.useForm();
+  const router = useRouter();
   const { data } = useQuery ( QUERY_ALL_PREDIOS);
   const [crearConstruccion ] = useMutation ( CREATE_CONSTRUCION_MUTATION )
 
@@ -31,7 +33,7 @@ export default function Propietarios() {
     } catch (error) {
       console.log("error al crear el registro", error)
     }
-
+    router.push('http://localhost:3000/construcciones');
   };
 
   return (
@@ -113,7 +115,7 @@ export default function Propietarios() {
                   }}
               >
                   <Button type="primary" htmlType="submit">
-                      Submit
+                      Guardar
                   </Button>
               </Form.Item>
           </Form>
