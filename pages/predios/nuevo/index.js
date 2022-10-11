@@ -26,9 +26,9 @@ export default function Predios() {
           }
         }
       ))
-      console.log('registro creado correctamente')
+      alert('registro creado correctamente')
     } catch (error) {
-      console.log('error al crear registro', error);
+      alert('error al crear registro', error);
     }
     router.push('http://localhost:3000/predios');
   };

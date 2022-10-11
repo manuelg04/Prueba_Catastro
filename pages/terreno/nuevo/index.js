@@ -30,10 +30,10 @@ export default function Terrenos() {
           }
         }
       ))
-      console.log('registro creado correctamente')
+      alert('registro creado correctamente')
 
     } catch (error) {
-      console.log("error al crear el registro", error)
+      alert("error al crear el registro", error)
     }    
     router.push('http://localhost:3000/terreno');
   };

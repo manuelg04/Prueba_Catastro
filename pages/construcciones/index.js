@@ -29,9 +29,9 @@ export default function Predios() {
           }
         }
       ));
-      console.log('registro eliminado con exito');
+      alert('registro eliminado con exito');
     } catch (error) {
-      console.log('error al eliminar registro', error);
+      alert('error al eliminar registro', error);
       
     }
 
@@ -50,9 +50,9 @@ export default function Predios() {
           }
         }
       ))
-      console.log('registro actualizado exitosamente');
+      alert('registro actualizado exitosamente');
     } catch (error) { 
-      console.log("error al actualizar el registro")      
+      alert("error al actualizar el registro")      
     }
     handleCancel();
   }
@@ -95,7 +95,7 @@ export default function Predios() {
         key: 'id',
       },
       {
-        title: 'idpredio',
+        title: 'id Predio',
         dataIndex: 'idpredio',
         key: 'idpredio',
       },

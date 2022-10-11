@@ -11,7 +11,7 @@ export default function Predios() {
   //logica
   const { data, loading, error } = useQuery ( QUERY_ALL_PREDIOS );
   const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
-  const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS)
+  const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
   const [ ModalAbierto, setModalAbierto ] = useState(false); 
   const [ modalForm ] = Form.useForm();
   const handleCancel = () => {
@@ -27,9 +27,9 @@ export default function Predios() {
           }
         }
       ));
-      console.log('registro eliminado con exito');
+      alert('registro eliminado con exito');
     } catch (error) {
-      console.log('error al eliminar registro', error);
+      alert('error al eliminar registro', error);
       
     }
 
@@ -49,9 +49,9 @@ export default function Predios() {
           }
         }
       ))
-      console.log('registro actualizado exitosamente');
+      alert('registro actualizado exitosamente');
     } catch (error) { 
-      console.log("error al actualizar el registro")      
+      alert("error al actualizar el registro");     
     }
     handleCancel();
   }
@@ -93,7 +93,7 @@ export default function Predios() {
     const columns = [
         
       {
-        title: 'idPredio',
+        title: 'id',
         dataIndex: 'idpredio',
         key: 'idpredio',
       },
@@ -162,7 +162,8 @@ export default function Predios() {
       <Table
         dataSource={dataTabla}
         columns={columns}
-        size='large' />
+        size='large'
+        />
       <Modal
         title="Editando predio"
         cancelText="Cancelar"

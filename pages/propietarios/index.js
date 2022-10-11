@@ -29,9 +29,9 @@ export default function Propietarios() {
           }
         }
       ));
-      console.log('registro eliminado con exito');
+      alert('registro eliminado con exito');
     } catch (error) {
-      console.log('error al eliminar registro', error);
+      alert('error al eliminar registro', error);
       
     }
 
@@ -52,9 +52,9 @@ export default function Propietarios() {
           }
         }
       ))
-      console.log('registro actualizado exitosamente');
+      alert('registro actualizado exitosamente');
     } catch (error) { 
-      console.log("error al actualizar el registro")
+      alert("error al actualizar el registro")
       
     }
     handleCancel();
@@ -175,10 +175,10 @@ export default function Propietarios() {
           }
         }
       ))
-      console.log('registro creado correctamente')
+      alert('registro creado correctamente')
 
     } catch (error) {
-      console.log("error al crear el registro", error)
+      alert("error al crear el registro", error)
     }
 
   };
@@ -219,7 +219,7 @@ export default function Propietarios() {
             <Input disabled />
           </Form.Item>
           <Form.Item
-            label="tipo de propietario"
+            label="Tipo de propietario"
             name="tipoprop"
             rules={[
               {
@@ -267,7 +267,7 @@ export default function Propietarios() {
             <Input />
           </Form.Item>
           <Form.Item
-            label="direccion"
+            label="Direccion"
             name="direccion"
             rules={[
               {
@@ -279,7 +279,7 @@ export default function Propietarios() {
             <Input />
           </Form.Item>
           <Form.Item
-            label="telefono"
+            label="Telefono"
             name="telefono"
             rules={[
               {
@@ -291,7 +291,7 @@ export default function Propietarios() {
             <Input />
           </Form.Item>
           <Form.Item
-            label="email"
+            label="Email"
             name="email"
             rules={[
               {
