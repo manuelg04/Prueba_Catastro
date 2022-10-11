@@ -25,7 +25,7 @@ CREATE TABLE construcciones (
     idpredio INTEGER NOT NULL,
 	numpisos TEXT NOT NULL,
 	areatotal TEXT,
-	tipoCons TEXT,
+	tipocons TEXT,
     direccion TEXT,
 	created_on TIMESTAMP NOT NULL
 );

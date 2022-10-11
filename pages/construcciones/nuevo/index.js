@@ -20,8 +20,8 @@ export default function Propietarios() {
           variables: {
             idpredio: idpredioInt,
             numpisos: values.numpisos,
-            areaTotal: values.areaTotal,
-            tipoCons: values.tipoCons,
+            areatotal: values.areatotal,
+            tipocons: values.tipocons,
             direccion: values.direccion
           }
         }
@@ -72,7 +72,7 @@ export default function Propietarios() {
               </Form.Item>
               <Form.Item
                   label="Area total de la construccion"
-                  name="areaTotal"
+                  name="areatotal"
                   rules={[
                       {
                           required: true,
@@ -84,7 +84,7 @@ export default function Propietarios() {
               </Form.Item>
               <Form.Item
                   label="Tipo de construccion"
-                  name="tipoCons"
+                  name="tipocons"
                   rules={[
                       {
                           required: true,

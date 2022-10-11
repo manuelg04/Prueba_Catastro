@@ -48,7 +48,7 @@ export const QUERY_ALL_PREDIOS = gql `
   `
 export const UPDATE_PREDIO_MUTATION = gql `
 
-  mutation updatePredioByIdPredio (
+  mutation updatePredioByIdpredio (
       $idpredio: Int!
       $numpre: String!,
       $nombre: String!,
@@ -57,7 +57,7 @@ export const UPDATE_PREDIO_MUTATION = gql `
       $municipio: String,
       $propietarios: String
   ) {
-    updatePredioByIdPredio (
+    updatePredioByIdpredio (
       input: {
         predioPatch: {
             numpre: $numpre,
@@ -80,10 +80,10 @@ export const UPDATE_PREDIO_MUTATION = gql `
 
 export const DELETE_PREDIO_MUTATION = gql `
 
-    mutation deletePredioByIdPredio (
+    mutation deletePredioByIdpredio (
       $idpredio: Int!
     ) {
-      deletePredioByIdPredio (
+      deletePredioByIdpredio (
         input: {
           idpredio: $idpredio
         }
@@ -122,8 +122,8 @@ export const QUERY_ALL_CONSTRUCCIONES = gql `
             id
             idpredio
             numpisos
-            areaTotal
-            tipoCons
+            areatotal
+            tipocons
             direccion
           }
         }
@@ -136,8 +136,8 @@ export const CREATE_CONSTRUCION_MUTATION  = gql `
     mutation createConstruccione (
                 $idpredio: Int!,
                 $numpisos: String,
-                $areaTotal: String,
-                $tipoCons: String,
+                $areatotal: String,
+                $tipocons: String,
                 $direccion: String,
     ) {
       createConstruccione (
@@ -145,8 +145,8 @@ export const CREATE_CONSTRUCION_MUTATION  = gql `
         construccione: {
                 idpredio: $idpredio,
                 numpisos: $numpisos,
-                areaTotal: $areaTotal,
-                tipoCons: $tipoCons,
+                areatotal: $areatotal,
+                tipocons: $tipocons,
                 direccion: $direccion
         }
       }
@@ -164,8 +164,8 @@ export const UPDATE_CONSTRUCCION_MUTATION = gql `
                 $id: Int!
                 $idpredio: Int!,
                 $numpisos: String,
-                $areaTotal: String,
-                $tipoCons: String,
+                $areatotal: String,
+                $tipocons: String,
                 $direccion: String,
   ) {
     updateConstruccioneById (
@@ -173,8 +173,8 @@ export const UPDATE_CONSTRUCCION_MUTATION = gql `
         construccionePatch: {
                 idpredio: $idpredio,
                 numpisos: $numpisos,
-                areaTotal: $areaTotal,
-                tipoCons: $tipoCons,
+                areatotal: $areatotal,
+                tipocons: $tipocons,
                 direccion: $direccion
         },
         id: $id

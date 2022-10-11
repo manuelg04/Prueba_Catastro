@@ -21,10 +21,10 @@ export default function Terrenos() {
             id: values.id,
             idpredio: idpredioInt,
             area: values.area,
-            valorComer: values.valorComer,
-            tipoTerre: values.tipoTerre,
-            consDentro: values.consDentro,
-            fuenAgua: values.fuenAgua
+            valorcomer: values.valorcomer,
+            tipoterre: values.tipoterre,
+            consdentro: values.consdentro,
+            fuenagua: values.fuenagua
           }
         }
       ))
@@ -74,7 +74,7 @@ export default function Terrenos() {
               </Form.Item>
               <Form.Item
                   label="Valor comercial del terreno"
-                  name="valorComer"
+                  name="valorcomer"
                   rules={[
                       {
                           required: true,
@@ -86,7 +86,7 @@ export default function Terrenos() {
               </Form.Item>
               <Form.Item
                   label="Tipo de terreno"
-                  name="tipoTerre"
+                  name="tipoterre"
                   rules={[
                       {
                           required: true,
@@ -98,7 +98,7 @@ export default function Terrenos() {
               </Form.Item>
               <Form.Item
                   label="¿Tiene construcciones?"
-                  name="consDentro"
+                  name="consdentro"
                   rules={[
                       {
                           required: true,
@@ -110,7 +110,7 @@ export default function Terrenos() {
               </Form.Item>
               <Form.Item
                   label="¿Tiene fuentes de agua?"
-                  name="fuenAgua"
+                  name="fuenagua"
                   rules={[
                       {
                           required: true,

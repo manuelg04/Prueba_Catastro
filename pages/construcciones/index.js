@@ -44,8 +44,8 @@ export default function Predios() {
             id: values.id,
             idpredio: values.idpredio,
             numpisos: values.numpisos,
-            areaTotal: values.areaTotal,
-            tipoCons: values.tipoCons,
+            areatotal: values.areatotal,
+            tipocons: values.tipocons,
             direccion: values.direccion
           }
         }
@@ -63,8 +63,8 @@ export default function Predios() {
       id: construccion.id,
       idpredio: construccion.idpredio,      
       numpisos: construccion.numpisos,
-      areaTotal: construccion.areaTotal,
-      tipoCons: construccion.tipoCons,
+      areatotal: construccion.areatotal,
+      tipocons: construccion.tipocons,
       direccion: construccion.direccion
 
     });    
@@ -79,8 +79,8 @@ export default function Predios() {
                     id: edge.node.id,
                     idpredio: edge.node.idpredio,
                     numpisos: edge.node.numpisos,
-                    areaTotal: edge.node.areaTotal,
-                    tipoCons: edge.node.tipoCons,
+                    areatotal: edge.node.areatotal,
+                    tipocons: edge.node.tipocons,
                     direccion:  edge.node.direccion,
                   
                   }                        
@@ -106,13 +106,13 @@ export default function Predios() {
       },
       {
         title: 'Area total',
-        dataIndex: 'areaTotal',
-        key: 'areaTotal',
+        dataIndex: 'areatotal',
+        key: 'areatotal',
       },
       {
         title: 'Tipo de construccion',
-        dataIndex: 'tipoCons',
-        key: 'tipoCons',
+        dataIndex: 'tipocons',
+        key: 'tipocons',
       },
       {
         title: 'Direccion',
@@ -204,7 +204,7 @@ export default function Predios() {
               </Form.Item>
               <Form.Item
                   label="Area total de la construccion"
-                  name="areaTotal"
+                  name="areatotal"
                   rules={[
                       {
                           required: true,
@@ -216,7 +216,7 @@ export default function Predios() {
               </Form.Item>
               <Form.Item
                   label="Tipo de construccion"
-                  name="tipoCons"
+                  name="tipocons"
                   rules={[
                       {
                           required: true,
