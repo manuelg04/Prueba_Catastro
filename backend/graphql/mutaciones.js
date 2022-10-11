@@ -6,7 +6,7 @@ export const QUERY_ALL_PREDIOS = gql `
       allPredios {
         edges {
           node {
-              idPredio
+              idpredio
               numpre
               nombre
               valor
@@ -49,7 +49,7 @@ export const QUERY_ALL_PREDIOS = gql `
 export const UPDATE_PREDIO_MUTATION = gql `
 
   mutation updatePredioByIdPredio (
-      $idPredio: Int!
+      $idpredio: Int!
       $numpre: String!,
       $nombre: String!,
       $valor: String,
@@ -67,11 +67,11 @@ export const UPDATE_PREDIO_MUTATION = gql `
             municipio: $municipio,
             propietarios: $propietarios
         },
-        idPredio: $idPredio
+        idpredio: $idpredio
       }
     ) {
       predio {
-        idPredio
+        idpredio
         numpre
       }
     }
@@ -81,15 +81,15 @@ export const UPDATE_PREDIO_MUTATION = gql `
 export const DELETE_PREDIO_MUTATION = gql `
 
     mutation deletePredioByIdPredio (
-      $idPredio: Int!
+      $idpredio: Int!
     ) {
       deletePredioByIdPredio (
         input: {
-          idPredio: $idPredio
+          idpredio: $idpredio
         }
       ) {
         predio {
-          idPredio
+          idpredio
         }
       }
     }
@@ -121,7 +121,7 @@ export const QUERY_ALL_CONSTRUCCIONES = gql `
           node {
             id
             idpredio
-            numPisos
+            numpisos
             areaTotal
             tipoCons
             direccion
@@ -135,7 +135,7 @@ export const CREATE_CONSTRUCION_MUTATION  = gql `
 
     mutation createConstruccione (
                 $idpredio: Int!,
-                $numPisos: String,
+                $numpisos: String,
                 $areaTotal: String,
                 $tipoCons: String,
                 $direccion: String,
@@ -144,7 +144,7 @@ export const CREATE_CONSTRUCION_MUTATION  = gql `
       input: {
         construccione: {
                 idpredio: $idpredio,
-                numPisos: $numPisos,
+                numpisos: $numpisos,
                 areaTotal: $areaTotal,
                 tipoCons: $tipoCons,
                 direccion: $direccion
@@ -163,7 +163,7 @@ export const UPDATE_CONSTRUCCION_MUTATION = gql `
   mutation updateConstruccioneById (
                 $id: Int!
                 $idpredio: Int!,
-                $numPisos: String,
+                $numpisos: String,
                 $areaTotal: String,
                 $tipoCons: String,
                 $direccion: String,
@@ -172,7 +172,7 @@ export const UPDATE_CONSTRUCCION_MUTATION = gql `
       input: {
         construccionePatch: {
                 idpredio: $idpredio,
-                numPisos: $numPisos,
+                numpisos: $numpisos,
                 areaTotal: $areaTotal,
                 tipoCons: $tipoCons,
                 direccion: $direccion
@@ -203,25 +203,44 @@ export const DELETE_CONSTRUCCION_MUTATION = gql `
       }
     }
 `
+
+export const QUERY_ALL_TERRENOS = gql `
+  query Terrenos {
+      allTerrenos {
+        edges {
+          node {
+            id
+            idpredio
+            area
+            valorcomer  
+            tipoterre
+            consdentro
+            fuenagua
+  
+          }
+        }
+      }
+    }
+  `
 export const CREATE_TERRENO_MUTATION  = gql `  
 
     mutation createTerreno (
             $idpredio: Int!,
             $area: String,
-            $valorComer: String,
-            $tipoTerre: String,
-            $consDentro: String,
-            $fuenAgua: String          
+            $valorcomer: String,
+            $tipoterre: String,
+            $consdentro: String,
+            $fuenagua: String          
     ) {
       createTerreno (
       input: {
         terreno: {
                 idpredio: $idpredio,
                 area: $area,
-                valorComer: $valorComer,
-                tipoTerre: $tipoTerre,
-                consDentro: $consDentro,
-                fuenAgua: $fuenAgua
+                valorcomer: $valorcomer,
+                tipoterre: $tipoterre,
+                consdentro: $consdentro,
+                fuenagua: $fuenagua
         }
       }
     ) {
@@ -231,6 +250,79 @@ export const CREATE_TERRENO_MUTATION  = gql `
     }
   }
 `
+
+export const UPDATE_TERRENO_MUTATION = gql `
+
+  mutation updateTerrenoById (
+      $id: Int!
+      $area: String,
+      $valorcomer: String!,
+      $tipoterre: String,
+      $consdentro: String,
+      $fuenagua: String,
+      
+  ) {
+    updateTerrenoById (
+      input: {
+        terrenoPatch: {
+            area: $area,
+            valorcomer: $valorcomer,
+            tipoterre: $tipoterre,
+            consdentro: $consdentro,
+            fuenagua: $fuenagua
+          
+        },
+        id: $id
+      }
+    ) {
+      terreno {
+        area
+      }
+    }
+  }
+`
+
+export const DELETE_TERRENO_MUTATION = gql `
+
+    mutation deleteTerrenoById (
+      $id: Int!
+    ) {
+      deleteTerrenoById (
+        input: {
+          id: $id
+        }
+      ) {
+        terreno{
+          id
+        }
+      }
+    }
+`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const CREATE_PROPIETARIO_MUTATION  = gql `  
 
@@ -326,11 +418,11 @@ export const REFRESH_QUERY_PROPIETARIOS = {
   }]
 }
 
-// export const REFRESH_QUERY_TERRENOS = {
-//   refetchQueries: [{ 
-//     query: QUERY_ALL_TERRENOS
-//   }]
-// }
+export const REFRESH_QUERY_TERRENOS = {
+  refetchQueries: [{ 
+    query: QUERY_ALL_TERRENOS
+  }]
+}
 
 export const REFRESH_QUERY_CONSTRUCCIONES = {
   refetchQueries: [{ 

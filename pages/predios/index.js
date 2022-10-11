@@ -23,7 +23,7 @@ export default function Predios() {
       deletePredio((
         {
           variables: {
-            idPredio: values.idPredio,
+            idpredio: values.idpredio,
           }
         }
       ));
@@ -40,7 +40,7 @@ export default function Predios() {
       updatePredio((
         {
           variables: {
-            idPredio: values.idPredio,
+            idpredio: values.idpredio,
             numpre: values.nopredial,
             nombre: values.nombre,
             valor: values.valor,
@@ -61,7 +61,7 @@ export default function Predios() {
     
     setModalAbierto(true);
     modalForm.setFieldsValue({
-      idPredio: predio.idPredio,      
+      idpredio: predio.idpredio,      
       nopredial: predio.numpre,
       valor: predio.valor,
       nombre: predio.nombre,
@@ -81,7 +81,7 @@ export default function Predios() {
     (edge) => {
         return (                        
                   {
-                    idPredio: edge.node.idPredio,
+                    idpredio: edge.node.idpredio,
                     numpre: edge.node.numpre,
                     nombre: edge.node.nombre,
                     valor: edge.node.valor,
@@ -96,8 +96,8 @@ export default function Predios() {
         
       {
         title: 'idPredio',
-        dataIndex: 'idPredio',
-        key: 'idPredio',
+        dataIndex: 'idpredio',
+        key: 'idpredio',
       },
       {
         title: 'Numero Predial',
@@ -184,7 +184,7 @@ export default function Predios() {
           </Form.Item>
           <Form.Item
             label="Id predio"
-            name="idPredio"
+            name="idpredio"
           >
             <Input disabled />
           </Form.Item>

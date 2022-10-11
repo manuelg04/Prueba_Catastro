@@ -43,7 +43,7 @@ export default function Predios() {
           variables: {
             id: values.id,
             idpredio: values.idpredio,
-            numPisos: values.numPisos,
+            numpisos: values.numpisos,
             areaTotal: values.areaTotal,
             tipoCons: values.tipoCons,
             direccion: values.direccion
@@ -62,7 +62,7 @@ export default function Predios() {
     modalForm.setFieldsValue({
       id: construccion.id,
       idpredio: construccion.idpredio,      
-      numPisos: construccion.numPisos,
+      numpisos: construccion.numpisos,
       areaTotal: construccion.areaTotal,
       tipoCons: construccion.tipoCons,
       direccion: construccion.direccion
@@ -78,7 +78,7 @@ export default function Predios() {
                   {
                     id: edge.node.id,
                     idpredio: edge.node.idpredio,
-                    numPisos: edge.node.numPisos,
+                    numpisos: edge.node.numpisos,
                     areaTotal: edge.node.areaTotal,
                     tipoCons: edge.node.tipoCons,
                     direccion:  edge.node.direccion,
@@ -95,14 +95,14 @@ export default function Predios() {
         key: 'id',
       },
       {
-        title: 'idPredio',
+        title: 'idpredio',
         dataIndex: 'idpredio',
         key: 'idpredio',
       },
       {
         title: 'Numero de pisos',
-        dataIndex: 'numPisos',
-        key: 'numPisos',
+        dataIndex: 'numpisos',
+        key: 'numpisos',
       },
       {
         title: 'Area total',
@@ -184,7 +184,7 @@ export default function Predios() {
                 {
                           dataPredios?.allPredios.edges.map((edge) => {
                               return (
-                                  <Option value={edge.node.idPredio}></Option>
+                                  <Option value={edge.node.idpredio}></Option>
                               )
                           })
                 }
@@ -192,7 +192,7 @@ export default function Predios() {
               </Form.Item>
               <Form.Item
                   label="Numero de pisos"
-                  name="numPisos"
+                  name="numpisos"
                   rules={[
                       {
                           required: true,

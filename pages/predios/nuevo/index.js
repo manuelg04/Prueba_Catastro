@@ -43,7 +43,7 @@ export default function Predios() {
       >
         <Form.Item
           label="Id predio"
-          name="idPredio"
+          name="idpredio"
         >
           <Input disabled />
         </Form.Item>

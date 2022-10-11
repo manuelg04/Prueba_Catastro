@@ -13,13 +13,13 @@ export default function Terrenos() {
   const [ crearTerreno ] = useMutation ( CREATE_TERRENO_MUTATION )
 
   const onFinish = (values) => {    
-      const idPredio = parseInt(values.idpredio);
+      const idpredioInt = parseInt(values.idpredio);
     try {
       crearTerreno ((        
         {
           variables: {
             id: values.id,
-            idpredio: idPredio,
+            idpredio: idpredioInt,
             area: values.area,
             valorComer: values.valorComer,
             tipoTerre: values.tipoTerre,
@@ -47,20 +47,14 @@ export default function Terrenos() {
               onFinish={onFinish}
           >
               <Form.Item
-                  label="id"
-                  name="id"
-              >
-                  <Input disabled />
-              </Form.Item>
-              <Form.Item
-                  label="id Predio"
+                  label="Predio"
                   name="idpredio"
               >
                 <Select defaultValue="Escoja un predio">
                 {
                           data?.allPredios.edges.map((edge) => {
                               return (
-                                  <Option value={edge.node.idPredio}></Option>
+                                  <Option value={edge.node.idpredio}></Option>
                               )
                           })
                 }
@@ -103,7 +97,7 @@ export default function Terrenos() {
                   <Input />
               </Form.Item>
               <Form.Item
-                  label="¿Tiene construcciones dentro de el?"
+                  label="¿Tiene construcciones?"
                   name="consDentro"
                   rules={[
                       {
@@ -115,7 +109,7 @@ export default function Terrenos() {
                   <Input />
               </Form.Item>
               <Form.Item
-                  label="¿Tiene fuentes de agua dentro de el?"
+                  label="¿Tiene fuentes de agua?"
                   name="fuenAgua"
                   rules={[
                       {

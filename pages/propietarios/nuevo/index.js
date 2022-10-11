@@ -1,15 +1,16 @@
 import Menu from '../../menu';
-import { useMutation } from '@apollo/client';
-import { Button, Form, Input, Radio } from 'antd';
+import { useMutation, useQuery } from '@apollo/client';
+import { Button, Form, Input, Select } from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { CREATE_PROPIETARIO_MUTATION } from "../../../backend/graphql/mutaciones";
+import { CREATE_PROPIETARIO_MUTATION, QUERY_ALL_PREDIOS } from "../../../backend/graphql/mutaciones";
 
 
 export default function Propietarios() {
+  const { Option } = Select;
   const [form] = Form.useForm();
-  const [requiredMark, setRequiredMarkType] = useState('optional');
-  const [crearPropietario, { data, error } ] = useMutation ( CREATE_PROPIETARIO_MUTATION)
+  const { data } = useQuery ( QUERY_ALL_PREDIOS);
+  const [ crearPropietario ] = useMutation ( CREATE_PROPIETARIO_MUTATION)
 
   const onFinish = (values) => {
     console.log('Success:', values);
@@ -58,14 +59,21 @@ export default function Propietarios() {
       //onFinishFailed={onFinishFailed}
       >
         <Form.Item
-          label="Id predio"
-          name="idPredio"
-
-        >
-          <Input />
-        </Form.Item>
+                  label="id Predio"
+                  name="idpredio"
+              >
+                <Select defaultValue="Escoja un predio">
+                {
+                          data?.allPredios.edges.map((edge) => {
+                              return (
+                                  <Option value={edge.node.idpredio}></Option>
+                              )
+                          })
+                }
+                </Select>
+              </Form.Item>
         <Form.Item
-          label="tipo de propietario"
+          label="Tipo de propietario"
           name="tipoprop"
           rules={[
             {
@@ -113,7 +121,7 @@ export default function Propietarios() {
           <Input />
         </Form.Item>
         <Form.Item
-          label="direccion"
+          label="Direccion"
           name="direccion"
           rules={[
             {
@@ -125,7 +133,7 @@ export default function Propietarios() {
           <Input />
         </Form.Item>
         <Form.Item
-          label="telefono"
+          label="Telefono"
           name="telefono"
           rules={[
             {
@@ -137,7 +145,7 @@ export default function Propietarios() {
           <Input />
         </Form.Item>
         <Form.Item
-          label="email"
+          label="Email"
           name="email"
           rules={[
             {

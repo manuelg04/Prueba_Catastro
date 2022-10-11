@@ -13,13 +13,13 @@ export default function Propietarios() {
   const [crearConstruccion ] = useMutation ( CREATE_CONSTRUCION_MUTATION )
 
   const onFinish = (values) => {    
-      const idPredio = parseInt(values.idpredio);
+      const idpredioInt = parseInt(values.idpredio);
     try {
       crearConstruccion ((        
         {
           variables: {
-            idpredio: idPredio,
-            numPisos: values.numPisos,
+            idpredio: idpredioInt,
+            numpisos: values.numpisos,
             areaTotal: values.areaTotal,
             tipoCons: values.tipoCons,
             direccion: values.direccion
@@ -43,13 +43,7 @@ export default function Propietarios() {
               labelCol={{ span: 8 }}
               wrapperCol={{ span: 16 }}
               onFinish={onFinish}
-          >
-              <Form.Item
-                  label="id"
-                  name="id"
-              >
-                  <Input disabled />
-              </Form.Item>
+          >              
               <Form.Item
                   label="id Predio"
                   name="idpredio"
@@ -58,7 +52,7 @@ export default function Propietarios() {
                 {
                           data?.allPredios.edges.map((edge) => {
                               return (
-                                  <Option value={edge.node.idPredio}></Option>
+                                  <Option value={edge.node.idpredio}></Option>
                               )
                           })
                 }
@@ -66,7 +60,7 @@ export default function Propietarios() {
               </Form.Item>
               <Form.Item
                   label="Numero de pisos"
-                  name="numPisos"
+                  name="numpisos"
                   rules={[
                       {
                           required: true,
