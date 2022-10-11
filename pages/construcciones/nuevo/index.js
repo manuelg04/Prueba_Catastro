@@ -39,7 +39,7 @@ export default function Propietarios() {
   return (
       <>
           <Menu />
-          <h1>Esta es la pagina para CREAR Construcciones</h1>
+          <h1>Esta es la pagina para Crear Construcciones</h1>
           <Form
               name="basic"
               labelCol={{ span: 8 }}

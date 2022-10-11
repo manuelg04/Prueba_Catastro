@@ -41,7 +41,7 @@ export default function Terrenos() {
   return (
       <>
           <Menu />
-          <h1>Esta es la pagina para CREAR terrenos</h1>
+          <h1>Esta es la pagina para Crear terrenos</h1>
           <Form
               name="basic"
               labelCol={{ span: 8 }}

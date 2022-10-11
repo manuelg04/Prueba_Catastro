@@ -36,7 +36,7 @@ export default function Predios() {
   return (
     <>
       <Menu />
-      <h1>Esta es la pagina para CREAR predios</h1>
+      <h1>Esta es la pagina para Crear predios</h1>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
