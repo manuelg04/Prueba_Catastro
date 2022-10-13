@@ -124,7 +124,7 @@ export default function Predios() {
         title: 'Acciones',
         dataIndex: 'acciones',
         key: 'acciones',
-        render: (x, construccion) => {
+       render: (x, construccion) => {
           return (
             <>
             

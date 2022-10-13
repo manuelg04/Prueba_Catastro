@@ -95,24 +95,7 @@ export const DELETE_PREDIO_MUTATION = gql `
     }
 `
 
-export const QUERY_ALL_PROPIETARIOS = gql `
-query Propietarios {
-    allPropietarios {
-      edges {
-        node {  
-            id
-            tipoprop
-            tipodoc
-            numdoc
-            nombre
-            direccion
-            telefono
-            email       
-           }
-      }
-    }
-  }
-`
+
 
 export const QUERY_ALL_CONSTRUCCIONES = gql `
   query Construcciones {
@@ -299,27 +282,24 @@ export const DELETE_TERRENO_MUTATION = gql `
     }
 `
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const QUERY_ALL_PROPIETARIOS = gql `
+query Propietarios {
+    allPropietarios {
+      edges {
+        node {  
+            id
+            tipoprop
+            tipodoc
+            numdoc
+            nombre
+            direccion
+            telefono
+            email       
+           }
+      }
+    }
+  }
+`
 
 
 
