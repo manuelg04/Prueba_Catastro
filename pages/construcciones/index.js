@@ -86,7 +86,8 @@ export default function Predios() {
                   }                        
                 )}
     )
-    
+    console.log("🚀 ~ data", data)
+        console.log("🚀 ~ dataTabla", dataTabla)
     const columns = [
         
       {

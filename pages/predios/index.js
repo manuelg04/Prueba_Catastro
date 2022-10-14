@@ -1,29 +1,68 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { Button, Form, Input, Modal, Radio, Table } from 'antd';
+import { Button, Form, Input, Modal, Radio, Table, Space} from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { CREATE_PREDIO_MUTATION, DELETE_PREDIO_MUTATION, QUERY_ALL_PREDIOS, REFRESH_QUERY_PREDIOS, UPDATE_PREDIO_MUTATION,  } from "../../backend/graphql/mutaciones";
+import { CREATE_PREDIO_MUTATION, QUERY_ALL_CONSTRUCCIONES, DELETE_PREDIO_MUTATION, QUERY_ALL_PREDIOS, REFRESH_QUERY_PREDIOS, UPDATE_PREDIO_MUTATION, MOSTRAR_CONSTRUCCION_MUTATION,  } from "../../backend/graphql/mutaciones";
 import Menu from '../menu';
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import Link from 'next/link';
 
 export default function Predios() {
   //logica
-  const { data, loading, error } = useQuery ( QUERY_ALL_PREDIOS );
+  const { data, loading, error } = useQuery ( QUERY_ALL_PREDIOS, QUERY_ALL_CONSTRUCCIONES);
+  const { data: dataConstrucciones } = useQuery ( QUERY_ALL_CONSTRUCCIONES , QUERY_ALL_PREDIOS);
   const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
   const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
-  const [ ModalAbierto, setModalAbierto ] = useState(false); 
+  const [mostrarConstruccione ] = useMutation (MOSTRAR_CONSTRUCCION_MUTATION)
+  const [ ModalAbierto, setModalAbierto, setModalAbierto2, ModalAbierto2 ] = useState(false); 
   const [ modalForm ] = Form.useForm();
-  const handleCancel = () => {
-    setModalAbierto(false);
-  };  
+  const [loadings, setLoadings] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const onBorrarPredio = (values) => {
-    try {
-      deletePredio((
-        {
-          variables: {
-            idpredio: values.idpredio,
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    
+    setIsModalOpen(false);
+  };
+
+  const handleCancel2 = () => {
+    setIsModalOpen(false);
+  }; 
+
+
+   const verConstruccion = (values) => {
+     try {
+       mostrarConstruccione((
+         {
+           variables: {
+             id: values.id,
+             dpredio: values.idpredio,
+             numpisos: values.numpisos,
+             areatotal: values.areatotal,
+             tipocons: values.tipocons,
+             direccion: values.direccion
+           }
+         }
+       ))
+       alert('Esta viendo la tabla de construccion exitosamente');
+     } catch (error) {
+       alert("No esta viendo la tabla de construiccion fallo") 
+    }
+    
+   }
+   
+              const handleCancel = () => {
+                setModalAbierto(false);
+              };  
+              
+              const onBorrarPredio = (values) => {
+                try {
+                  deletePredio((
+                    {
+                      variables: {
+                        idpredio: values.idpredio,
           }
         }
       ));
@@ -32,7 +71,6 @@ export default function Predios() {
       alert('error al eliminar registro', error);
       
     }
-
   }
   const editPredio = (values) => {
     try {
@@ -56,7 +94,6 @@ export default function Predios() {
     handleCancel();
   }
   const selectPredio = (predio) => {
-    
     setModalAbierto(true);
     modalForm.setFieldsValue({
       idpredio: predio.idpredio,      
@@ -73,11 +110,95 @@ export default function Predios() {
     });    
   }
 
+  const selectConstruccion = (predio) => {
+       showModal();
+  
+      console.log("Id del select construccion " , predio.idpredio)
+      console.log("data tabla 2", dataTablaConstrucciones)
+      
+  }
+
+  const dataTablaConstrucciones =   
+  dataConstrucciones?.allConstrucciones.edges.map(    
+    (edge) => {
+      return (                        
+              {
+              id: edge.node.id,
+              idpredio: edge.node.idpredio,
+              numpisos: edge.node.numpisos,
+              areatotal: edge.node.areatotal,
+              tipocons: edge.node.tipocons,
+              direccion:  edge.node.direccion
+              
+            }                        
+        )}
+        )
+
+    const columnsConstrucciones = [
+        
+      {
+        title: 'id',
+        dataIndex: 'id',
+        key: 'id',
+      },
+      {
+        title: 'id Predio',
+        dataIndex: 'idpredio',
+        key: 'idpredio',
+      },
+      {
+        title: 'Numero de pisos',
+        dataIndex: 'numpisos',
+        key: 'numpisos',
+      },
+      {
+        title: 'Area total',
+        dataIndex: 'areatotal',
+        key: 'areatotal',
+      },
+      {
+        title: 'Tipo de construccion',
+        dataIndex: 'tipocons',
+        key: 'tipocons',
+      },
+      {
+        title: 'Direccion',
+        dataIndex: 'direccion',
+        key: 'direccion',
+      },
+      
+      {
+        title: 'Acciones',
+        dataIndex: 'acciones',
+        key: 'acciones',
+       render: (x, predio) => {
+        
+          return (
+            <>            
+             <EditOutlined      
+              onClick={() => {
+                selectPredio(predio);
+              }}
+              />
+
+              <DeleteOutlined
+                onClick={() => {
+                  onBorrarPredio(predio);
+                }}
+                style={{ color: "red", marginLeft: 20 }}
+              />
+                
+            </>
+          );
+        },
+      },
+    ]; 
+
 
   const dataTabla =   
   data?.allPredios.edges.map(
     (edge) => {
-        return (                        
+        return (        
                   {
                     idpredio: edge.node.idpredio,
                     numpre: edge.node.numpre,
@@ -86,6 +207,7 @@ export default function Predios() {
                     depto:  edge.node.depto,
                     municipio: edge.node.municipio,
                     propietarios: edge.node.propietarios
+                    
                   }                        
                 )}
     )
@@ -127,15 +249,35 @@ export default function Predios() {
         dataIndex:  'propietarios',
         key: 'propietarios',
       },    
+
+      {
+        title: 'Construcciones',
+        dataIndex:  'construcciones',
+        key: 'construcciones',
+        render:(x, construccion) => {
+          return(
+            <>
+
+           <PlusCircleOutlined  
+            onClick={() => {
+              selectConstruccion(construccion);
+            }}/>
+
+            </>
+          )
+
+        }
+      },    
       {
         title: 'Acciones',
         dataIndex: 'acciones',
         key: 'acciones',
         render: (x, predio) => {
+
           return (
             <>
-            
-              <EditOutlined      
+
+            <EditOutlined      
               onClick={() => {
                 selectPredio(predio);
               }}
@@ -147,23 +289,78 @@ export default function Predios() {
                 }}
                 style={{ color: "red", marginLeft: 20 }}
               />
+ 
+        <Modal 
+
+        title="Aqui se mostraria la tabla de construcciones"
+        open={isModalOpen} 
+        onOk={handleOk} 
+        onCancel={handleCancel2}
+        width={616}
+
+        
+        onClick={() => {
+          verConstruccion(construccion);
+        }}
+
+        
+
+        cancelText="Cancelar"
+        okText="Guardar"
+        visible={isModalOpen}
+       
+        
+        >
+        <Table
+        
+        dataSource={dataTablaConstrucciones}
+        columns={columnsConstrucciones}
+        size='large' />
+        
+       
+
+      </Modal>
+
+             
             </>
           );
         },
       },
     ];  
 
+    
+
+
+
+
   return (
+
     <>
       <Menu />
       <Button type="primary">
         <Link href="/predios/nuevo"> Agregar nuevo predio </Link>
       </Button>
+
+     
+      
       <Table
         dataSource={dataTabla}
         columns={columns}
         size='large'
         />
+
+
+      <Modal
+        title="YENDO HACIA CONSTRUICCIONES"
+        cancelText="Cancelar"
+        okText="Guardar"
+        visible={ModalAbierto2}
+        onOk={modalForm.submit}
+        >
+
+
+
+      </Modal>
       <Modal
         title="Editando predio"
         cancelText="Cancelar"
@@ -171,6 +368,9 @@ export default function Predios() {
         visible={ModalAbierto}
         onOk={modalForm.submit}
         onCancel={handleCancel}>
+
+      
+
 
         <Form
           form={modalForm}

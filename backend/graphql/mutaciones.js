@@ -114,6 +114,40 @@ export const QUERY_ALL_CONSTRUCCIONES = gql `
     }
   `
 
+
+
+
+export const MOSTRAR_CONSTRUCCION_MUTATION = gql`
+
+    mutation mostrarConstruccione(
+
+                $idpredio: Int!,
+                $numpisos: String,
+                $areatotal: String,
+                $tipocons: String,
+                $direccion: String,
+
+    ){
+      mostrarConstruccione(
+        input:{
+          construcciones: {
+            idpredio: $idpredio,
+                numpisos: $numpisos,
+                areatotal: $areatotal,
+                tipocons: $tipocons,
+                direccion: $direccion
+          }
+        }
+      ){
+      construccione{
+        id
+      }
+    } 
+  }
+
+
+`
+
 export const CREATE_CONSTRUCION_MUTATION  = gql `  
 
     mutation createConstruccione (
@@ -300,8 +334,6 @@ query Propietarios {
     }
   }
 `
-
-
 
 
 export const CREATE_PROPIETARIO_MUTATION  = gql `  
