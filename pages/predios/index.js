@@ -2,22 +2,28 @@ import { useMutation, useQuery } from '@apollo/client';
 import { Button, Form, Input, Modal, Table} from 'antd';
 import React, { useState } from 'react';
 import 'antd/dist/antd.css';
-import { QUERY_ALL_CONSTRUCCIONES, DELETE_PREDIO_MUTATION, QUERY_ALL_PREDIOS, REFRESH_QUERY_PREDIOS, UPDATE_PREDIO_MUTATION, MOSTRAR_CONSTRUCCION_MUTATION,  } from "../../backend/graphql/mutaciones";
+import { QUERY_ALL_CONSTRUCCIONES, DELETE_PREDIO_MUTATION, QUERY_ALL_PREDIOS, REFRESH_QUERY_PREDIOS, UPDATE_PREDIO_MUTATION, MOSTRAR_CONSTRUCCION_MUTATION, MOSTRAR_TERRENO_MUTATION, QUERY_ALL_TERRENOS } from "../../backend/graphql/mutaciones";
 import Menu from '../menu';
 import { EditOutlined, DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
 import Link from 'next/link';
+import styles from "../../styles/menu.module.css";
+
 
 export default function Predios() {
   //logica
   const { data } = useQuery ( QUERY_ALL_PREDIOS, QUERY_ALL_CONSTRUCCIONES);
   const { data: dataConstrucciones } = useQuery ( QUERY_ALL_CONSTRUCCIONES , QUERY_ALL_PREDIOS);
+  const { data: dataTerrenos } = useQuery ( QUERY_ALL_TERRENOS , QUERY_ALL_PREDIOS);
   const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
   const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
-  const [ mostrarConstruccione ] = useMutation (MOSTRAR_CONSTRUCCION_MUTATION)
+  const [ mostrarConstruccione ] = useMutation (MOSTRAR_CONSTRUCCION_MUTATION);
+  const [ mostrarTerrenos ] = useMutation (MOSTRAR_TERRENO_MUTATION)
   const [ ModalAbierto, setModalAbierto ] = useState(false); 
   const [ modalForm ] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen2, setIsModalOpen2] = useState(false);
   const [ construccionActual, setConstruccionActual ] = useState();
+  const [ terrenoActual, setTerrenoActual ] = useState();
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -30,6 +36,20 @@ export default function Predios() {
   const handleCancel2 = () => {
     setIsModalOpen(false);
   }; 
+
+  const showModal2 = () => {
+    setIsModalOpen2(true);
+  };
+  const handleOk2 = () => {
+    
+    setIsModalOpen2(false);
+  };
+
+  const handleCancel3 = () => {
+    setIsModalOpen2(false);
+  };
+
+
 
   
   const verConstruccion = (values) => {
@@ -56,6 +76,35 @@ export default function Predios() {
       }
       
     }
+
+    const verTerreno = (values) => {
+    
+    
+    
+   
+      try {
+        mostrarTerrenos((
+          {
+            variables: {
+            id: values.id,
+            idpredio: values.idpredio,
+            area: values.area,
+            valorcomer: values.valorcomer,
+            tipoterre: values.tipoterre,
+            consdentro: values.consdentro,
+            fuenagua: values.fuenagua
+            }
+          }
+          ))
+          alert('Esta viendo la tabla de terrenos exitosamente');
+        } catch (error) {
+          alert("No esta viendo la tabla de terrenos fallo") 
+        }
+        
+      }
+
+
+
     
     const handleCancel = () => {
       setModalAbierto(false);
@@ -126,6 +175,106 @@ export default function Predios() {
           })
           showModal();
         }
+
+        const selectTerreno = (predio) => {
+          const arrTerrenosFiltered = [];
+           dataTablaTerrenos.map((terreno) => {
+
+            if(terreno.idpredio === predio.idpredio){
+              arrTerrenosFiltered.push(terreno);
+            }
+            
+      
+            setTerrenoActual(arrTerrenosFiltered);
+          })
+          showModal2();
+        }
+
+
+        const dataTablaTerrenos =   
+          dataTerrenos?.allTerrenos.edges.map(
+    (edge) => {
+        return (                        
+                  {
+                    id: edge.node.id,
+                    idpredio: edge.node.idpredio,
+                    area: edge.node.area,
+                    valorcomer: edge.node.valorcomer,
+                    tipoterre: edge.node.tipoterre,
+                    consdentro: edge.node.consdentro,
+                    fuenagua: edge.node.fuenagua,
+                  
+                  }                        
+                )}
+    )
+
+
+    const columnsTerrenos = [
+        
+      {
+        title: 'id',
+        dataIndex: 'id',
+        key: 'id',
+      },
+      {
+        title: 'id Predio',
+        dataIndex: 'idpredio',
+        key: 'idpredio',
+      },
+      {
+        title: 'Area del terreno',
+        dataIndex: 'area',
+        key: 'area',
+      },
+      {
+        title: 'Valor comercial',
+        dataIndex: 'valorcomer',
+        key: 'valorcomer',
+      },
+      {
+        title: 'Tipo de terreno',
+        dataIndex: 'tipoterre',
+        key: 'tipoterre',
+      },
+      {
+        title: 'Construcciones dentro',
+        dataIndex: 'consdentro',
+        key: 'consdentro',
+      },
+      {
+        title: 'Fuentes de agua cerca',
+        dataIndex: 'fuenagua',
+        key: 'fuenagua',
+      },
+
+      
+      {
+        title: 'Acciones',
+        dataIndex: 'acciones',
+        key: 'acciones',
+        render: (x, predio) => {
+          return (
+            <>
+            
+              <EditOutlined      
+              onClick={() => {
+                selectPredio(predio);
+              }}
+              />
+
+              <DeleteOutlined
+                onClick={() => {
+                  onBorrarTerreno(terreno);
+                }}
+                style={{ color: "red", marginLeft: 20 }}
+              />
+            </>
+          );
+        },
+      },
+    ];  
+          
+
 
  
   const dataTablaConstrucciones =
@@ -272,6 +421,7 @@ export default function Predios() {
             <>
 
            <PlusCircleOutlined  
+           className={styles.circuloinfo}
             onClick={() => {
               selectConstruccion(construccion);
               
@@ -281,7 +431,29 @@ export default function Predios() {
           )
 
         }
-      },    
+      }, 
+      {
+        title: 'Terrenos',
+        dataIndex:  'terreno',
+        key: 'terreno',
+        render:(x, terreno) => {
+          return(
+            <>
+
+           <PlusCircleOutlined  
+           className={styles.circuloinfo}
+            onClick={() => {
+              selectTerreno(terreno);
+              
+            }}/>
+
+            </>
+          )
+
+        }
+      },
+
+
       {
         title: 'Acciones',
         dataIndex: 'acciones',
@@ -304,6 +476,34 @@ export default function Predios() {
                 style={{ color: "red", marginLeft: 20 }}
               />
 
+              <Modal
+
+                title="Aqui se mostraria la tabla de terrenos"
+                open={isModalOpen2}
+                onOk={handleOk2}
+                onCancel={handleCancel3}
+                width={816}
+
+
+                onClick={() => {
+                  verTerreno(terreno);
+                }}
+
+                cancelText="Cancelar"
+                okText="Guardar"
+                visible={isModalOpen2}
+
+              >
+                <Table
+
+                  // dataSource={dataTablaTerrenos}
+                  dataSource={terrenoActual}
+                  columns={columnsTerrenos}
+                  size='large'
+
+                />
+
+              </Modal>
 
         <Modal 
 

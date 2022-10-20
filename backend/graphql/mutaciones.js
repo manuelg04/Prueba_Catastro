@@ -239,6 +239,41 @@ export const QUERY_ALL_TERRENOS = gql `
       }
     }
   `
+
+
+export const MOSTRAR_TERRENO_MUTATION = gql`
+
+mutation mostrarTerrenos(
+
+            $idpredio: Int!,
+            $area: String,
+            $valorcomer: String,
+            $tipoterre: String,
+            $consdentro: String,
+            $fuenagua: String 
+
+){
+  mostrarTerreno(
+    input:{
+      terreno: {
+                idpredio: $idpredio,
+                area: $area,
+                valorcomer: $valorcomer,
+                tipoterre: $tipoterre,
+                consdentro: $consdentro,
+                fuenagua: $fuenagua
+      }
+    }
+  ){
+  terreno{
+    id
+  }
+} 
+}
+
+
+`
+
 export const CREATE_TERRENO_MUTATION  = gql `  
 
     mutation createTerreno (

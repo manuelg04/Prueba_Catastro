@@ -6,8 +6,9 @@ import { DELETE_TERRENO_MUTATION, QUERY_ALL_TERRENOS , QUERY_ALL_PREDIOS, REFRES
 import Menu from '../menu';
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Link from 'next/link';
+import styles from "../../styles/menu.module.css";
 
-export default function Predios() {
+export default function Terrenos() {
   //logica
   const { Option } = Select;
   const { data, loading, error } = useQuery ( QUERY_ALL_TERRENOS );
