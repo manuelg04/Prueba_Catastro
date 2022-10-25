@@ -6,7 +6,7 @@ CREATE TABLE predios (
     depto TEXT,
     municipio TEXT,
     propietarios TEXT,
-	created_on TIMESTAMP NOT NULL
+	created_on TIMESTAMP 
 );
 
 CREATE TABLE terrenos (
@@ -17,17 +17,17 @@ CREATE TABLE terrenos (
     tipoterre TEXT,
     consdentro TEXT,
     fuenagua TEXT,
-	created_on TIMESTAMP NOT NULL
+	created_on TIMESTAMP 
 );
 
 CREATE TABLE construcciones (
 	id serial PRIMARY KEY NOT NULL,
     idpredio INTEGER NOT NULL,
-	numpisos TEXT NOT NULL,
+	numpisos TEXT,
 	areatotal TEXT,
 	tipocons TEXT,
     direccion TEXT,
-	created_on TIMESTAMP NOT NULL
+	created_on TIMESTAMP 
 );
 
 CREATE TABLE propietarios (
@@ -39,7 +39,7 @@ CREATE TABLE propietarios (
     direccion TEXT,
     telefono TEXT,
     email TEXT,
-	created_on TIMESTAMP NOT NULL
+	created_on TIMESTAMP 
 );
 
 

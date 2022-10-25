@@ -88,14 +88,14 @@ export default function Terrenos() {
                 {
                     
                           data?.allPredios.edges.map((edge) => {
-                            if(edge.node.idpredio === dataTablaTerrenos.idpredio){
+                            // if(edge.node.idpredio === dataTablaTerrenos.idpredio){
                                 
                                 
-                                console.log("Este terreno ya esta asignado a un predio")
-                            }else{
+                            //     console.log("Este terreno ya esta asignado a un predio")
+                            // }else{
 
-                                console.log("Este terreno no esta asignado a un predio")
-                            }
+                            //     console.log("Este terreno no esta asignado a un predio")
+                            // }
 
                               //console.log("Este es el idpredio", idpredio)
                               return (
