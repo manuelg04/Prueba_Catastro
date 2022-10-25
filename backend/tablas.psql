@@ -5,8 +5,7 @@ CREATE TABLE predios (
 	nombre TEXT NOT NULL,
     depto TEXT,
     municipio TEXT,
-    propietarios TEXT,
-	created_on TIMESTAMP 
+    propietarios TEXT
 );
 
 CREATE TABLE terrenos (
@@ -16,8 +15,7 @@ CREATE TABLE terrenos (
 	valorcomer TEXT,
     tipoterre TEXT,
     consdentro TEXT,
-    fuenagua TEXT,
-	created_on TIMESTAMP 
+    fuenagua TEXT
 );
 
 CREATE TABLE construcciones (
@@ -26,8 +24,7 @@ CREATE TABLE construcciones (
 	numpisos TEXT,
 	areatotal TEXT,
 	tipocons TEXT,
-    direccion TEXT,
-	created_on TIMESTAMP 
+    direccion TEXT
 );
 
 CREATE TABLE propietarios (
@@ -38,8 +35,7 @@ CREATE TABLE propietarios (
 	nombre TEXT,
     direccion TEXT,
     telefono TEXT,
-    email TEXT,
-	created_on TIMESTAMP 
+    email TEXT
 );
 
 

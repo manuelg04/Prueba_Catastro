@@ -11,9 +11,9 @@ import styles from "../../styles/menu.module.css";
 
 export default function Predios() {
   //logica
-  const { data } = useQuery ( QUERY_ALL_PREDIOS, QUERY_ALL_CONSTRUCCIONES);
-  const { data: dataConstrucciones } = useQuery ( QUERY_ALL_CONSTRUCCIONES , QUERY_ALL_PREDIOS);
-  const { data: dataTerrenos } = useQuery ( QUERY_ALL_TERRENOS , QUERY_ALL_PREDIOS);
+  const { data } = useQuery ( QUERY_ALL_PREDIOS);
+  const { data: dataConstrucciones } = useQuery ( QUERY_ALL_CONSTRUCCIONES );
+  const { data: dataTerrenos } = useQuery ( QUERY_ALL_TERRENOS);
   const [ deletePredio ] = useMutation ( DELETE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
   const [ updatePredio ] = useMutation (UPDATE_PREDIO_MUTATION, REFRESH_QUERY_PREDIOS);
   const [ mostrarConstruccione ] = useMutation (MOSTRAR_CONSTRUCCION_MUTATION);

@@ -25,6 +25,7 @@ export default function Propietarios() {
             areatotal: values.areatotal,
             tipocons: values.tipocons,
             direccion: values.direccion
+            
           }
         }
       ))
